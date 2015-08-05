@@ -1,10 +1,9 @@
 Changelog
 =========
 
-0.2.0 (2015-02-21)
+0.0.0 (2015-08-05)
 ------------------
-* Option for choosing to start with/without the master chooser. 
-* Revamped camera classes.
-* Revamped onStart with fewer arguments.
+* First implementation of cv_bridge in java for rosjava and android apps.
 * First build on indigo.
+
 

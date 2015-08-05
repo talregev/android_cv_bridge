@@ -11,5 +11,5 @@ catkin_package()
 # Installation
 ##############################################################################
 
-install(DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_MAVEN_DESTINATION}/org/ros/android_core/ 
-        DESTINATION ${CATKIN_GLOBAL_MAVEN_DESTINATION}/org/ros/android_core)
+install(DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_MAVEN_DESTINATION}/cv_bridge/
+        DESTINATION ${CATKIN_GLOBAL_MAVEN_DESTINATION}/cv_bridge)
