@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-include "lib_cv_bridge"
+include "cv_bridge"
 include "opencv"
 include "opencv3"
 

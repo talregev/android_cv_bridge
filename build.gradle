@@ -38,7 +38,7 @@ buildscript {
 apply plugin: "catkin"
 
 allprojects {
-    group "cv_bridge"
+    group "org"
     version = project.catkin.pkg.version
 }
 
