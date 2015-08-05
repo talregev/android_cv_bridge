@@ -85,7 +85,7 @@ class CvImage
     @SuppressWarnings("unused")
     public final Image toImageMsg(final Image ros_image) throws IOException {
         ros_image.setHeader(header);
-        ros_image.setEncoding(encoding);
+        ros_image.setEncoding(encoding.toLowerCase());
         int totalByteFrame = (safeLongToInt(image.total()));
         ros_image.setWidth(image.width());
         ros_image.setHeight(image.height());
@@ -119,29 +119,29 @@ class CvImage
 
     static int getCvType(final String encoding) throws Exception {
 
-        if (encoding.equals("BGR8"))   return CvType.CV_8UC3;
-        if (encoding.equals("MONO8"))  return CvType.CV_8UC1;
-        if (encoding.equals("RGB8"))   return CvType.CV_8UC3;
-        if (encoding.equals("MONO16")) return CvType.CV_16UC1;
-        if (encoding.equals("BGR16"))  return CvType.CV_16UC3;
-        if (encoding.equals("RGB16"))  return CvType.CV_16UC3;
-        if (encoding.equals("BGRA8"))  return CvType.CV_8UC4;
-        if (encoding.equals("RGBA8"))  return CvType.CV_8UC4;
-        if (encoding.equals("BGRA16")) return CvType.CV_16UC4;
-        if (encoding.equals("RGBA16")) return CvType.CV_16UC4;
+        if (encoding.toUpperCase().equals("BGR8"))   return CvType.CV_8UC3;
+        if (encoding.toUpperCase().equals("MONO8"))  return CvType.CV_8UC1;
+        if (encoding.toUpperCase().equals("RGB8"))   return CvType.CV_8UC3;
+        if (encoding.toUpperCase().equals("MONO16")) return CvType.CV_16UC1;
+        if (encoding.toUpperCase().equals("BGR16"))  return CvType.CV_16UC3;
+        if (encoding.toUpperCase().equals("RGB16"))  return CvType.CV_16UC3;
+        if (encoding.toUpperCase().equals("BGRA8"))  return CvType.CV_8UC4;
+        if (encoding.toUpperCase().equals("RGBA8"))  return CvType.CV_8UC4;
+        if (encoding.toUpperCase().equals("BGRA16")) return CvType.CV_16UC4;
+        if (encoding.toUpperCase().equals("RGBA16")) return CvType.CV_16UC4;
 
         // For bayer, return one-channel
-        if (encoding.equals("BAYER_RGGB8")) return CvType.CV_8UC1;
-        if (encoding.equals("BAYER_BGGR8")) return CvType.CV_8UC1;
-        if (encoding.equals("BAYER_GBRG8")) return CvType.CV_8UC1;
-        if (encoding.equals("BAYER_GRBG8")) return CvType.CV_8UC1;
-        if (encoding.equals("BAYER_RGGB16")) return CvType.CV_16UC1;
-        if (encoding.equals("BAYER_BGGR16")) return CvType.CV_16UC1;
-        if (encoding.equals("BAYER_GBRG16")) return CvType.CV_16UC1;
-        if (encoding.equals("BAYER_GRBG16")) return CvType.CV_16UC1;
+        if (encoding.toUpperCase().equals("BAYER_RGGB8")) return CvType.CV_8UC1;
+        if (encoding.toUpperCase().equals("BAYER_BGGR8")) return CvType.CV_8UC1;
+        if (encoding.toUpperCase().equals("BAYER_GBRG8")) return CvType.CV_8UC1;
+        if (encoding.toUpperCase().equals("BAYER_GRBG8")) return CvType.CV_8UC1;
+        if (encoding.toUpperCase().equals("BAYER_RGGB16")) return CvType.CV_16UC1;
+        if (encoding.toUpperCase().equals("BAYER_BGGR16")) return CvType.CV_16UC1;
+        if (encoding.toUpperCase().equals("BAYER_GBRG16")) return CvType.CV_16UC1;
+        if (encoding.toUpperCase().equals("BAYER_GRBG16")) return CvType.CV_16UC1;
 
         // Miscellaneous
-        if (encoding.equals("YUV422")) return CvType.CV_8UC2;
+        if (encoding.toUpperCase().equals("YUV422")) return CvType.CV_8UC2;
         throw new Exception("Unrecognized image encoding [" + encoding + "]");
     }
 
@@ -212,17 +212,17 @@ class CvImage
 
     protected static Encode getFormat(final String encoding)
     {
-        if ((encoding.equals("MONO8") || (encoding.equals("MONO8")))) return Encode.GRAY;
-        if ((encoding.equals("BGR8") || (encoding.equals("BGR8")))) return Encode.BGR;
-        if ((encoding.equals("RGB8") || (encoding.equals("RGB8")))) return Encode.RGB;
-        if ((encoding.equals("BGRA8") || (encoding.equals("BGRA8")))) return Encode.BGRA;
-        if ((encoding.equals("RGBA8") || (encoding.equals("RGBA8")))) return Encode.RGBA;
-        if (encoding.equals("YUV422")) return Encode.YUV422;
+        if ((encoding.toUpperCase().equals("MONO8") || (encoding.toUpperCase().equals("MONO8")))) return Encode.GRAY;
+        if ((encoding.toUpperCase().equals("BGR8") || (encoding.toUpperCase().equals("BGR8")))) return Encode.BGR;
+        if ((encoding.toUpperCase().equals("RGB8") || (encoding.toUpperCase().equals("RGB8")))) return Encode.RGB;
+        if ((encoding.toUpperCase().equals("BGRA8") || (encoding.toUpperCase().equals("BGRA8")))) return Encode.BGRA;
+        if ((encoding.toUpperCase().equals("RGBA8") || (encoding.toUpperCase().equals("RGBA8")))) return Encode.RGBA;
+        if (encoding.toUpperCase().equals("YUV422")) return Encode.YUV422;
 
-        if ((encoding.equals("BAYER_RGGB8") || (encoding.equals("BAYER_RGGB8")))) return Encode.BAYER_RGGB;
-        if ((encoding.equals("BAYER_BGGR8") || (encoding.equals("BAYER_BGGR8")))) return Encode.BAYER_BGGR;
-        if ((encoding.equals("BAYER_GBRG8") || (encoding.equals("BAYER_GBRG8")))) return Encode.BAYER_GBRG;
-        if ((encoding.equals("BAYER_GRBG8") || (encoding.equals("BAYER_GRBG8")))) return Encode.BAYER_GRBG;
+        if ((encoding.toUpperCase().equals("BAYER_RGGB8") || (encoding.toUpperCase().equals("BAYER_RGGB8")))) return Encode.BAYER_RGGB;
+        if ((encoding.toUpperCase().equals("BAYER_BGGR8") || (encoding.toUpperCase().equals("BAYER_BGGR8")))) return Encode.BAYER_BGGR;
+        if ((encoding.toUpperCase().equals("BAYER_GBRG8") || (encoding.toUpperCase().equals("BAYER_GBRG8")))) return Encode.BAYER_GBRG;
+        if ((encoding.toUpperCase().equals("BAYER_GRBG8") || (encoding.toUpperCase().equals("BAYER_GRBG8")))) return Encode.BAYER_GRBG;
 
         // We don't support conversions to/from other types
         return Encode.INVALID;
@@ -296,7 +296,7 @@ class CvImage
         cvCompressImage.header = src_header;
 
         // Copy to new buffer if same encoding requested
-        if (dst_encoding.isEmpty() || dst_encoding.equals(src_encoding))
+        if (dst_encoding.isEmpty() || dst_encoding.toUpperCase().equals(src_encoding.toUpperCase()))
         {
             cvCompressImage.encoding = src_encoding;
             source.copyTo(cvCompressImage.image);

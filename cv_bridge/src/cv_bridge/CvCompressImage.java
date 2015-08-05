@@ -155,7 +155,7 @@ public class CvCompressImage
         Bitmap image = BitmapFactory.decodeByteArray(imageInBytes, source.getData().arrayOffset(), imageInBytes.length);
         ByteBuffer bb = ByteBuffer.allocate(image.getRowBytes() * image.getHeight());
         image.copyPixelsToBuffer(bb);
-        //TODO: check which cv type the compress image.
+        //TODO: check which cv type the encoded image.
         Mat cvImage = new Mat(image.getHeight(),image.getWidth(),CvType.CV_8UC3);
         cvImage.put(image.getHeight(),image.getWidth(),bb.array());
         return cvImage;
