@@ -51,8 +51,6 @@ public class CvCompressImage
     public Mat image = new Mat();
     public String format = "";
     protected ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
-    protected static final int SAME_FORMAT = -1;
-
 
     @SuppressWarnings("unused")
     public CvCompressImage(){}
@@ -61,7 +59,7 @@ public class CvCompressImage
     public CvCompressImage(final Header header, final String format)
     {
         this.header = header;
-        this.format = format;
+        this.format = format.toLowerCase();
         this.image = new Mat();
     }
     @SuppressWarnings("unused")
@@ -69,7 +67,7 @@ public class CvCompressImage
                            final Mat image)
     {
         this.header = header;
-        this.format = format;
+        this.format = format.toLowerCase();
         this.image = image;
     }
 
@@ -130,7 +128,7 @@ public class CvCompressImage
 
     @SuppressWarnings("unused")
     static public CvCompressImage toCvCopy(final CompressedImage source, final String format) throws Exception {
-        return CvCompressImage.toCvCopyImpl(matFromImage(source), source.getHeader(), format);
+        return CvCompressImage.toCvCopyImpl(matFromImage(source), source.getHeader(), format.toLowerCase());
     }
 
     @SuppressWarnings("unused")
