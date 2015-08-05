@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>cv_bridge</name>
+    <version>0.2.0</version>
+    <description>
+        Android support packages for rosjava.
+    </description>
+    <url type="website">http://ros.org/wiki/android_core</url>
+    <url type="repository">https://github.com/rosjava/android_core</url>
+    <url type="bugtracker">https://github.com/rosjava/android_core/issues</url>
+    <maintainer email="tal.regev@gmail.com">Tal Regev</maintainer>
+    <author email="tal.regev@gmail.com">Tal Regev</author>
+    <license>Apache 2.0</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>rosjava_build_tools</build_depend>
+    <build_depend>android_10</build_depend>
+</package>
