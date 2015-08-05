@@ -1,1 +1,1 @@
-cv_bridge is a Converting between ROS images and OpenCV images library in rosjava is the first pure Java implementation of bridge.
+cv_bridge is a Converting between ROS images and OpenCV images library in rosjava is the first pure Android Java implementation of cv_bridge.
