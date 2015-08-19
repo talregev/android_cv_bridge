@@ -30,4 +30,5 @@
 include "cv_bridge"
 include "opencv"
 include "opencv3"
+include "android_tutorial_cv_bridge"
 

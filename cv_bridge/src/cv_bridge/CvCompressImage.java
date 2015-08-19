@@ -32,6 +32,7 @@ package cv_bridge;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -45,6 +46,9 @@ import java.nio.ByteBuffer;
 import sensor_msgs.CompressedImage;
 import std_msgs.Header;
 
+/**
+ * @author Tal Regev
+ */
 public class CvCompressImage
 {
     public Header header;
@@ -149,8 +153,10 @@ public class CvCompressImage
 
     protected static Mat matFromImage(final CompressedImage source) throws Exception
     {
-        byte[] imageInBytes = source.getData().array();
-        Bitmap image = BitmapFactory.decodeByteArray(imageInBytes, source.getData().arrayOffset(), imageInBytes.length);
+        ChannelBuffer data = source.getData();
+        byte[] imageInBytes = data.array();
+        int offset = data.arrayOffset();
+        Bitmap image = BitmapFactory.decodeByteArray(imageInBytes, offset, imageInBytes.length);
         ByteBuffer bb = ByteBuffer.allocate(image.getRowBytes() * image.getHeight());
         image.copyPixelsToBuffer(bb);
         //TODO: check which cv type the encoded image.

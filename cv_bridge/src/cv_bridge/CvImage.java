@@ -46,8 +46,12 @@ import java.util.Vector;
 import sensor_msgs.Image;
 import std_msgs.Header;
 
-class CvImage
+/**
+ * @author Tal Regev
+ */
+public class CvImage
 {
+    protected static final String TAG = "cv_bridge::CvImage";
     public Header header;
     public Mat image = new Mat();
     public String encoding = "";
@@ -74,13 +78,13 @@ class CvImage
         this.image = image;
     }
 
-    @SuppressWarnings("unused")
-    public final Image toImageMsg() throws IOException {
-        //TODO create new blank message and not get it from the user. (i don't know how to do it)
-        Image newBlankMessage = null; //new Image()
-        //noinspection ConstantConditions
-        return toImageMsg(newBlankMessage);
-    }
+//    @SuppressWarnings("unused")
+//    public final Image toImageMsg() throws IOException {
+//        //TODO create new blank message and not get it from the user. (i don't know how to do it)
+//        Image newBlankMessage = null; //new Image()
+//        //noinspection ConstantConditions
+//        return toImageMsg(newBlankMessage);
+//    }
 
     @SuppressWarnings("unused")
     public final Image toImageMsg(final Image ros_image) throws IOException {
