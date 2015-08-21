@@ -64,6 +64,8 @@ subprojects {
     afterEvaluate { project ->
         // Change the layout of Android projects to be compatible with Eclipse.
         android {
+            compileSdkVersion 23
+            buildToolsVersion "23"
             sourceSets {
                 //noinspection GroovyAssignabilityCheck
                 main {

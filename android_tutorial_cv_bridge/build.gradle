@@ -15,7 +15,6 @@
  */
 
 dependencies {
-  compile 'org.ros.rosjava_core:rosjava_tutorial_pubsub:[0.2,0.3)'
   compile 'org.ros.android_core:android_10:[0.2,0.3)'
   compile project(':cv_bridge')
 }
@@ -23,12 +22,11 @@ dependencies {
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion 10
 
   defaultConfig {
     minSdkVersion 10
     applicationId "org.ros.android.android_tutorial_cv_bridge"
-    targetSdkVersion 22
+    targetSdkVersion 15
     versionCode 1
     versionName "1.0"
   }

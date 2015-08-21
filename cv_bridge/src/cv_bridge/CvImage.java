@@ -232,7 +232,7 @@ public class CvImage
         return Encode.INVALID;
     }
 
-    protected static final Vector<Integer> getConversionCode(String src_encoding, String dst_encoding) throws Exception {
+    protected static Vector<Integer> getConversionCode(String src_encoding, String dst_encoding) throws Exception {
         Encode src_encode = getFormat(src_encoding);
         Encode dst_encode = getFormat(dst_encoding);
         //TODO: check if src is color format
@@ -347,7 +347,8 @@ public class CvImage
     protected static Mat matFromImage(final Image source) throws Exception {
         byte[] imageInBytes = source.getData().array();
         imageInBytes = Arrays.copyOfRange(imageInBytes,source.getData().arrayOffset(),imageInBytes.length);
-        Mat cvImage = new Mat(source.getHeight(),source.getWidth(),getCvType(source.getEncoding()));
+        String encoding = source.getEncoding().toUpperCase();
+        Mat cvImage = new Mat(source.getHeight(),source.getWidth(),getCvType(encoding));
         cvImage.put(source.getHeight(),source.getWidth(),imageInBytes);
         return cvImage;
     }

@@ -31,7 +31,11 @@ package org.ros.android.android_tutorial_cv_bridge;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -39,6 +43,8 @@ import org.ros.android.RosActivity;
 import org.ros.android.android_tutorial_pubsub.R;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
+import org.ros.namespace.NameResolver;
+import org.ros.namespace.NodeNameResolver;
 import org.ros.node.ConnectedNode;
 import org.ros.node.Node;
 import org.ros.node.NodeConfiguration;
@@ -46,6 +52,7 @@ import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
+import org.xbill.DNS.Resolver;
 
 import java.io.IOException;
 
@@ -62,81 +69,109 @@ public class MainActivity extends RosActivity implements NodeMain{
     protected Subscriber<Image> imageSubscriber;
     protected ConnectedNode node;
     protected static final String TAG = "cv_bridge Tutorial";
+    protected boolean isInit = false;
 
 
     public MainActivity() {
-    // The RosActivity constructor configures the notification title and ticker
-    // messages.
-    super("cv_bridge Tutorial", "cv_bridge Tutorial");
-  }
+        // The RosActivity constructor configures the notification title and ticker
+        // messages.
+        super("cv_bridge Tutorial", "cv_bridge Tutorial");
+    }
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.main);
-  }
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.main);
+    }
 
-  @Override
-  protected void init(NodeMainExecutor nodeMainExecutor) {
+    @Override
+    protected void init(NodeMainExecutor nodeMainExecutor) {
+        // At this point, the user has already been prompted to either enter the URI
+        // of a master to use or to start a master locally.
 
+        // The user can easily use the selected ROS Hostname in the master chooser
+        // activity.
+        NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
+        nodeConfiguration.setMasterUri(getMasterUri());
+        nodeMainExecutor.execute(this, nodeConfiguration);
+        isInit = true;
+        onResume();
+    }
 
-    // At this point, the user has already been prompted to either enter the URI
-    // of a master to use or to start a master locally.
+    @Override
+    public GraphName getDefaultNodeName() {
+        return GraphName.of("android_tutorial_cv_bridge");
+    }
 
-    // The user can easily use the selected ROS Hostname in the master chooser
-    // activity.
-    NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
-    nodeConfiguration.setMasterUri(getMasterUri());
-    nodeMainExecutor.execute(this, nodeConfiguration);
-  }
+    protected boolean isOpenCVInit = false;
+    protected BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.i(TAG, "OpenCV loaded successfully");
+                    isOpenCVInit = true;
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
 
-  @Override
-  public GraphName getDefaultNodeName() {
-    return GraphName.of("android_tutorial_cv_bridge");
-  }
-
-  @Override
-  public void onStart(ConnectedNode connectedNode) {
-      this.node = connectedNode;
-      final org.apache.commons.logging.Log log = node.getLog();
-      imagePublisher = node.newPublisher("/camera/image_raw", Image._TYPE);
-      imageSubscriber = node.newSubscriber("/image_converter/output_video", Image._TYPE);
-      imageSubscriber.addMessageListener(new MessageListener<Image>() {
-          @Override
-          public void onNewMessage(Image message) {
+    @Override
+    public void onStart(ConnectedNode connectedNode) {
+    this.node = connectedNode;
+    final org.apache.commons.logging.Log log = node.getLog();
+    NameResolver resolver = node.getResolver().newChild("/web0/webcamera/image/");
+    imagePublisher = node.newPublisher("/camera/image_raw", Image._TYPE);
+    imageSubscriber = node.newSubscriber(resolver.resolve("raw"), Image._TYPE);
+    imageSubscriber.addMessageListener(new MessageListener<Image>() {
+      @Override
+      public void onNewMessage(Image message) {
+          if (isOpenCVInit) {
               CvImage cvImage;
               try {
-                    cvImage = CvImage.toCvCopy(message);
+                  cvImage = CvImage.toCvCopy(message);
               } catch (Exception e) {
                   log.error("cv_bridge exception: " + e.getMessage());
                   return;
               }
-              if (cvImage.image.rows() > 60 && cvImage.image.cols() > 60)
-                  Core.circle(cvImage.image, new Point(50, 50), 10, new Scalar(255,0,0));
+              //if (cvImage.image.rows() > 60 && cvImage.image.cols() > 60)
+              //    Core.circle(cvImage.image, new Point(50, 50), 10, new Scalar(255, 0, 0));
               try {
                   imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
               } catch (IOException e) {
                   log.error("cv_bridge exception: " + e.getMessage());
               }
           }
-      });
+      }
+    });
 
-      Log.i(TAG, "called onStart");
-  }
+        Log.i(TAG, "called onStart");
+    }
 
-  @Override
-  public void onShutdown(Node node) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isInit) {
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
+        }
+    }
 
-  }
+    @Override
+    public void onShutdown(Node node) {
+    }
 
-  @Override
-  public void onShutdownComplete(Node node) {
+    @Override
+    public void onShutdownComplete(Node node) {
+    }
 
-  }
-
-  @Override
-  public void onError(Node node, Throwable throwable) {
-
-  }
+    @Override
+    public void onError(Node node, Throwable throwable) {
+    }
 }
