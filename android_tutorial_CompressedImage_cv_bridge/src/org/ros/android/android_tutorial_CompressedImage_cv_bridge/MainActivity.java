@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.ros.android.android_tutorial_cv_bridge;
+package org.ros.android.android_tutorial_CompressedImage_cv_bridge;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +52,8 @@ import org.ros.node.topic.Subscriber;
 
 import java.io.IOException;
 
-import cv_bridge.CvImage;
+import cv_bridge.CvCompressImage;
+import sensor_msgs.CompressedImage;
 import sensor_msgs.Image;
 
 
@@ -61,17 +62,17 @@ import sensor_msgs.Image;
  */
 public class MainActivity extends RosActivity implements NodeMain{
 
-    protected Publisher<Image> imagePublisher;
-    protected Subscriber<Image> imageSubscriber;
+    protected Publisher<CompressedImage> imagePublisher;
+    protected Subscriber<CompressedImage> imageSubscriber;
     protected ConnectedNode node;
-    protected static final String TAG = "cv_bridge Tutorial";
+    protected static final String TAG = "compressed Tutorial";
     protected boolean isInit = false;
 
 
     public MainActivity() {
         // The RosActivity constructor configures the notification title and ticker
         // messages.
-        super("cv_bridge Tutorial", "cv_bridge Tutorial");
+        super("compressed_image Tutorial", "compressed_image Tutorial");
     }
 
     @SuppressWarnings("unchecked")
@@ -123,15 +124,15 @@ public class MainActivity extends RosActivity implements NodeMain{
     public void onStart(ConnectedNode connectedNode) {
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
-    imagePublisher = node.newPublisher("/camera/image_raw", Image._TYPE);
-    imageSubscriber = node.newSubscriber("/web0/webcamera/image/raw", Image._TYPE);
-    imageSubscriber.addMessageListener(new MessageListener<Image>() {
+    imagePublisher = node.newPublisher("/camera/image/compressed", CompressedImage._TYPE);
+    imageSubscriber = node.newSubscriber("/web0/webcamera/image/compressed", CompressedImage._TYPE);
+    imageSubscriber.addMessageListener(new MessageListener<CompressedImage>() {
         @Override
-        public void onNewMessage(Image message) {
+        public void onNewMessage(CompressedImage message) {
             if (isOpenCVInit) {
-                CvImage cvImage;
+                CvCompressImage cvImage;
                 try {
-                    cvImage = CvImage.toCvCopy(message);
+                    cvImage = CvCompressImage.toCvCopy(message);
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;

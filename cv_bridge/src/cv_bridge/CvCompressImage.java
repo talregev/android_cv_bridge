@@ -42,6 +42,7 @@ import org.ros.internal.message.MessageBuffers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import sensor_msgs.CompressedImage;
 import std_msgs.Header;
@@ -148,6 +149,7 @@ public class CvCompressImage
         CvCompressImage cvCompressImage = new CvCompressImage();
         cvCompressImage.header = src_header;
         cvCompressImage.format = dst_format;
+        cvCompressImage.image = source;
         return cvCompressImage;
     }
 
@@ -155,13 +157,13 @@ public class CvCompressImage
     {
         ChannelBuffer data = source.getData();
         byte[] imageInBytes = data.array();
-        int offset = data.arrayOffset();
-        Bitmap image = BitmapFactory.decodeByteArray(imageInBytes, offset, imageInBytes.length);
+        imageInBytes = Arrays.copyOfRange(imageInBytes, source.getData().arrayOffset(), imageInBytes.length);
+        Bitmap image = BitmapFactory.decodeByteArray(imageInBytes, 0, imageInBytes.length);
         ByteBuffer bb = ByteBuffer.allocate(image.getRowBytes() * image.getHeight());
         image.copyPixelsToBuffer(bb);
         //TODO: check which cv type the encoded image.
         Mat cvImage = new Mat(image.getHeight(),image.getWidth(),CvType.CV_8UC3);
-        cvImage.put(image.getHeight(),image.getWidth(),bb.array());
+        cvImage.put(0,0,bb.array());
         return cvImage;
     }
 }
