@@ -66,6 +66,7 @@ subprojects {
         android {
             compileSdkVersion 23
             buildToolsVersion "23"
+            //noinspection GroovyAssignabilityCheck
             sourceSets {
                 //noinspection GroovyAssignabilityCheck
                 main {
@@ -77,6 +78,7 @@ subprojects {
             }
 
             // Copy JAR dependencies into the libs directory for Eclipse.
+            //noinspection GroovyAssignabilityCheck
             task deployLibs(type: Copy) {
                 from { configurations.compile }
                 into { "${project.projectDir}/libs" }
