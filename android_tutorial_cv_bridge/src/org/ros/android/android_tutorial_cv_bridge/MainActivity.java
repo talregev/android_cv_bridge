@@ -43,8 +43,6 @@ import org.ros.android.RosActivity;
 import org.ros.android.android_tutorial_pubsub.R;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
-import org.ros.namespace.NameResolver;
-import org.ros.namespace.NodeNameResolver;
 import org.ros.node.ConnectedNode;
 import org.ros.node.Node;
 import org.ros.node.NodeConfiguration;
@@ -52,7 +50,6 @@ import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
-import org.xbill.DNS.Resolver;
 
 import java.io.IOException;
 
@@ -127,29 +124,31 @@ public class MainActivity extends RosActivity implements NodeMain{
     public void onStart(ConnectedNode connectedNode) {
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
-    NameResolver resolver = node.getResolver().newChild("/web0/webcamera/image/");
-    imagePublisher = node.newPublisher("/camera/image_raw", Image._TYPE);
-    imageSubscriber = node.newSubscriber(resolver.resolve("raw"), Image._TYPE);
+    imagePublisher = node.newPublisher("/image_converter/output_video", Image._TYPE);
+    imageSubscriber = node.newSubscriber("/camera/image_raw", Image._TYPE);
     imageSubscriber.addMessageListener(new MessageListener<Image>() {
-      @Override
-      public void onNewMessage(Image message) {
-          if (isOpenCVInit) {
-              CvImage cvImage;
-              try {
-                  cvImage = CvImage.toCvCopy(message);
-              } catch (Exception e) {
-                  log.error("cv_bridge exception: " + e.getMessage());
-                  return;
-              }
-              //if (cvImage.image.rows() > 60 && cvImage.image.cols() > 60)
-              //    Core.circle(cvImage.image, new Point(50, 50), 10, new Scalar(255, 0, 0));
-              try {
-                  imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
-              } catch (IOException e) {
-                  log.error("cv_bridge exception: " + e.getMessage());
-              }
-          }
-      }
+        @Override
+        public void onNewMessage(Image message) {
+            if (isOpenCVInit) {
+                CvImage cvImage;
+                try {
+                    cvImage = CvImage.toCvCopy(message);
+                } catch (Exception e) {
+                    log.error("cv_bridge exception: " + e.getMessage());
+                    return;
+                }
+                //make sure the picture is bug enough for my circle.
+                if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
+                    //place the circle in the middle of the picture with radius 100.
+                    Core.circle(cvImage.image, new Point(cvImage.image.cols()/2, cvImage.image.rows()/2), 100, new Scalar(255, 0, 0));
+                }
+                try {
+                    imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
+                } catch (IOException e) {
+                    log.error("cv_bridge exception: " + e.getMessage());
+                }
+            }
+        }
     });
 
         Log.i(TAG, "called onStart");

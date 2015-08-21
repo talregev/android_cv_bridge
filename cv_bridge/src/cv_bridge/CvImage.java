@@ -349,7 +349,7 @@ public class CvImage
         imageInBytes = Arrays.copyOfRange(imageInBytes,source.getData().arrayOffset(),imageInBytes.length);
         String encoding = source.getEncoding().toUpperCase();
         Mat cvImage = new Mat(source.getHeight(),source.getWidth(),getCvType(encoding));
-        cvImage.put(source.getHeight(),source.getWidth(),imageInBytes);
+        cvImage.put(0,0,imageInBytes);
         return cvImage;
     }
 }
