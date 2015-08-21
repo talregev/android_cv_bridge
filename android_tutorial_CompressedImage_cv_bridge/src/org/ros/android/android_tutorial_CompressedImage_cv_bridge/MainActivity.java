@@ -29,13 +29,16 @@
 
 package org.ros.android.android_tutorial_CompressedImage_cv_bridge;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -54,7 +57,6 @@ import java.io.IOException;
 
 import cv_bridge.CvCompressImage;
 import sensor_msgs.CompressedImage;
-import sensor_msgs.Image;
 
 
 /**
@@ -67,6 +69,8 @@ public class MainActivity extends RosActivity implements NodeMain{
     protected ConnectedNode node;
     protected static final String TAG = "compressed Tutorial";
     protected boolean isInit = false;
+    protected Bitmap bmp;
+    protected ImageView imageView;
 
 
     public MainActivity() {
@@ -81,6 +85,7 @@ public class MainActivity extends RosActivity implements NodeMain{
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.main);
+        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     @Override
@@ -124,8 +129,8 @@ public class MainActivity extends RosActivity implements NodeMain{
     public void onStart(ConnectedNode connectedNode) {
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
-    imagePublisher = node.newPublisher("/camera/image/compressed", CompressedImage._TYPE);
-    imageSubscriber = node.newSubscriber("/web0/webcamera/image/compressed", CompressedImage._TYPE);
+    imagePublisher = node.newPublisher("/image_converter/output_video/compressed", CompressedImage._TYPE);
+    imageSubscriber = node.newSubscriber("/camera/image/compressed", CompressedImage._TYPE);
     imageSubscriber.addMessageListener(new MessageListener<CompressedImage>() {
         @Override
         public void onNewMessage(CompressedImage message) {
@@ -140,8 +145,20 @@ public class MainActivity extends RosActivity implements NodeMain{
                 //make sure the picture is bug enough for my circle.
                 if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
                     //place the circle in the middle of the picture with radius 100 and color blue.
-                    Core.circle(cvImage.image, new Point(cvImage.image.cols()/2, cvImage.image.rows()/2), 100, new Scalar(255, 0, 0));
+                    Core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0));
                 }
+
+                cvImage.image = cvImage.image.t();
+                bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(cvImage.image, bmp);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                        imageView.setImageBitmap(bmp);
+                    }
+                });
+                cvImage.image = cvImage.image.t();
                 try {
                     imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
                 } catch (IOException e) {

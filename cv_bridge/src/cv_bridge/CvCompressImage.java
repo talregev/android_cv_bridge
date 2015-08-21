@@ -159,11 +159,12 @@ public class CvCompressImage
         byte[] imageInBytes = data.array();
         imageInBytes = Arrays.copyOfRange(imageInBytes, source.getData().arrayOffset(), imageInBytes.length);
         Bitmap image = BitmapFactory.decodeByteArray(imageInBytes, 0, imageInBytes.length);
-        ByteBuffer bb = ByteBuffer.allocate(image.getRowBytes() * image.getHeight());
-        image.copyPixelsToBuffer(bb);
+        Bitmap bmp32 = image.copy(Bitmap.Config.RGB_565, true);
+        ByteBuffer bb = ByteBuffer.allocate(bmp32.getRowBytes() * bmp32.getHeight());
+        bmp32.copyPixelsToBuffer(bb);
         //TODO: check which cv type the encoded image.
         Mat cvImage = new Mat(image.getHeight(),image.getWidth(),CvType.CV_8UC3);
-        cvImage.put(0,0,bb.array());
+        cvImage.put(0, 0, bb.array());
         return cvImage;
     }
 }
