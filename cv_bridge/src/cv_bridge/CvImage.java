@@ -59,17 +59,15 @@ public class CvImage
     protected static final int SAME_FORMAT = -1;
 
 
-    @SuppressWarnings("unused")
     public CvImage(){}
 
-    @SuppressWarnings("unused")
     public CvImage(final Header header, final String encoding)
     {
         this.header = header;
         this.encoding = encoding.toUpperCase();
         this.image = new Mat();
     }
-    @SuppressWarnings("unused")
+
     public CvImage(final Header header, final String encoding,
                    final Mat image)
     {
@@ -190,59 +188,99 @@ public class CvImage
         return (int) l;
     }
 
+    @SuppressWarnings("Convert2Diamond")
     protected static Map<Pair<Encode, Encode>, Vector<Integer>> getConversionCodes() {
         Map<Pair<Encode, Encode>, Vector<Integer>> res = new HashMap<Pair<Encode, Encode>, Vector<Integer>>();
 
-        for(int i=0; i<=5; ++i)
-            res.put(new Pair<Encode, Encode>(Encode.valueOf(i), Encode.valueOf(i)),new Vector<Integer>(SAME_FORMAT));
+        for(int i=0; i<=5; ++i) {
+            res.put(new Pair<Encode, Encode>(Encode.valueOf(i), Encode.valueOf(i)),
+                    new Vector<Integer>(Arrays.asList(new Integer[]{SAME_FORMAT})));
+        }
 
-        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.RGB), new Vector<Integer>(Imgproc.COLOR_GRAY2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_GRAY2BGR));
-        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.RGBA),new Vector<Integer>(Imgproc.COLOR_GRAY2RGBA));
-        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.BGRA),new Vector<Integer>(Imgproc.COLOR_GRAY2BGRA));
+        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_GRAY2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_GRAY2BGR})));
+        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.RGBA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_GRAY2RGBA})));
+        res.put(new Pair<Encode, Encode>(Encode.GRAY, Encode.BGRA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_GRAY2BGRA})));
 
-        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_RGB2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_RGB2BGR));
-        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.RGBA),new Vector<Integer>(Imgproc.COLOR_RGB2RGBA));
-        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.BGRA),new Vector<Integer>(Imgproc.COLOR_RGB2BGRA));
+        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGB2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGB2BGR})));
+        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.RGBA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGB2RGBA})));
+        res.put(new Pair<Encode, Encode>(Encode.RGB, Encode.BGRA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGB2BGRA})));
 
-        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_BGR2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_BGR2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.RGBA),new Vector<Integer>(Imgproc.COLOR_BGR2RGBA));
-        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.BGRA),new Vector<Integer>(Imgproc.COLOR_BGR2BGRA));
+        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGR2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGR2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.RGBA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGR2RGBA})));
+        res.put(new Pair<Encode, Encode>(Encode.BGR, Encode.BGRA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGR2BGRA})));
 
-        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_RGBA2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_RGBA2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_RGBA2BGR));
-        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.BGRA),new Vector<Integer>(Imgproc.COLOR_RGBA2BGRA));
+        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGBA2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGBA2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGBA2BGR})));
+        res.put(new Pair<Encode, Encode>(Encode.RGBA, Encode.BGRA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_RGBA2BGRA})));
 
-        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_BGRA2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_BGRA2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_BGRA2BGR));
-        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.RGBA),new Vector<Integer>(Imgproc.COLOR_BGRA2RGBA));
+        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGRA2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGRA2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGRA2BGR})));
+        res.put(new Pair<Encode, Encode>(Encode.BGRA, Encode.RGBA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BGRA2RGBA})));
 
-        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_YUV2GRAY_UYVY));
-        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_YUV2RGB_UYVY));
-        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_YUV2BGR_UYVY));
-        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.RGBA),new Vector<Integer>(Imgproc.COLOR_YUV2RGBA_UYVY));
-        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.BGRA),new Vector<Integer>(Imgproc.COLOR_YUV2BGRA_UYVY));
+        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_YUV2GRAY_UYVY})));
+        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_YUV2RGB_UYVY})));
+        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_YUV2BGR_UYVY})));
+        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.RGBA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_YUV2RGBA_UYVY})));
+        res.put(new Pair<Encode, Encode>(Encode.YUV422, Encode.BGRA),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_YUV2BGRA_UYVY})));
 
         // Deal with Bayer
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_RGGB, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_BayerBG2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_RGGB, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_BayerBG2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_RGGB, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_BayerBG2BGR));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_RGGB, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerBG2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_RGGB, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerBG2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_RGGB, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerBG2BGR})));
 
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_BGGR, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_BayerRG2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_BGGR, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_BayerRG2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_BGGR, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_BayerRG2BGR));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_BGGR, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerRG2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_BGGR, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerRG2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_BGGR, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerRG2BGR})));
 
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_GBRG, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_BayerGR2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_GBRG, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_BayerGR2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_GBRG, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_BayerGR2BGR));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_GBRG, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerGR2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_GBRG, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerGR2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_GBRG, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerGR2BGR})));
 
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_GRBG, Encode.GRAY),new Vector<Integer>(Imgproc.COLOR_BayerGB2GRAY));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_GRBG, Encode.RGB),new Vector<Integer>(Imgproc.COLOR_BayerGB2RGB));
-        res.put(new Pair<Encode, Encode>(Encode.BAYER_GRBG, Encode.BGR),new Vector<Integer>(Imgproc.COLOR_BayerGB2BGR));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_GRBG, Encode.GRAY),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerGB2GRAY})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_GRBG, Encode.RGB),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerGB2RGB})));
+        res.put(new Pair<Encode, Encode>(Encode.BAYER_GRBG, Encode.BGR),
+			new Vector<Integer>(Arrays.asList(new Integer[]{Imgproc.COLOR_BayerGB2BGR})));
 
         return res;
     }

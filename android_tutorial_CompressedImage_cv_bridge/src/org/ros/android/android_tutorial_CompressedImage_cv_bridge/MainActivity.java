@@ -149,6 +149,7 @@ public class MainActivity extends RosActivity implements NodeMain{
                 }
 
                 cvImage.image = cvImage.image.t();
+                Core.flip(cvImage.image, cvImage.image, 1);
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(cvImage.image, bmp);
                 runOnUiThread(new Runnable() {
@@ -158,6 +159,7 @@ public class MainActivity extends RosActivity implements NodeMain{
                         imageView.setImageBitmap(bmp);
                     }
                 });
+                Core.flip(cvImage.image, cvImage.image, 1);
                 cvImage.image = cvImage.image.t();
                 try {
                     imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));

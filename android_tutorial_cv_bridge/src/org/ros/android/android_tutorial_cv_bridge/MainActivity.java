@@ -130,14 +130,14 @@ public class MainActivity extends RosActivity implements NodeMain{
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
     imagePublisher = node.newPublisher("/image_converter/output_video", Image._TYPE);
-    imageSubscriber = node.newSubscriber("/camera/image_raw", Image._TYPE);
+    imageSubscriber = node.newSubscriber("/web0/webcamera/image/raw", Image._TYPE);
     imageSubscriber.addMessageListener(new MessageListener<Image>() {
         @Override
         public void onNewMessage(Image message) {
             if (isOpenCVInit) {
                 CvImage cvImage;
                 try {
-                    cvImage = CvImage.toCvCopy(message);
+                    cvImage = CvImage.toCvCopy(message,"rgb8");
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
@@ -148,6 +148,7 @@ public class MainActivity extends RosActivity implements NodeMain{
                     Core.circle(cvImage.image, new Point(cvImage.image.cols()/2, cvImage.image.rows()/2), 100, new Scalar(255, 0, 0));
                 }
                 cvImage.image = cvImage.image.t();
+                Core.flip(cvImage.image,cvImage.image,1);
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(cvImage.image, bmp);
                 runOnUiThread(new Runnable() {
@@ -157,6 +158,7 @@ public class MainActivity extends RosActivity implements NodeMain{
                         imageView.setImageBitmap(bmp);
                     }
                 });
+                Core.flip(cvImage.image, cvImage.image, 1);
                 cvImage.image = cvImage.image.t();
                 try {
                     imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
