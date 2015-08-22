@@ -137,11 +137,12 @@ public class MainActivity extends RosActivity implements NodeMain{
             if (isOpenCVInit) {
                 CvCompressImage cvImage;
                 try {
-                    cvImage = CvCompressImage.toCvCopy(message);
+                    cvImage = CvCompressImage.toCvCopy(message,"rgb8");
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
                 }
+
                 //make sure the picture is bug enough for my circle.
                 if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
                     //place the circle in the middle of the picture with radius 100 and color blue.
@@ -150,6 +151,7 @@ public class MainActivity extends RosActivity implements NodeMain{
 
                 cvImage.image = cvImage.image.t();
                 Core.flip(cvImage.image, cvImage.image, 1);
+
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(cvImage.image, bmp);
                 runOnUiThread(new Runnable() {
@@ -159,11 +161,13 @@ public class MainActivity extends RosActivity implements NodeMain{
                         imageView.setImageBitmap(bmp);
                     }
                 });
+
                 Core.flip(cvImage.image, cvImage.image, 1);
                 cvImage.image = cvImage.image.t();
+
                 try {
-                    imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
-                } catch (IOException e) {
+                    imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage(),"jpg"));
+                } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                 }
             }

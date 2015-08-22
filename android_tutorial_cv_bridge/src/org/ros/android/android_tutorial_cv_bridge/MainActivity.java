@@ -129,7 +129,7 @@ public class MainActivity extends RosActivity implements NodeMain{
     public void onStart(ConnectedNode connectedNode) {
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
-    imagePublisher = node.newPublisher("/image_converter/output_video", Image._TYPE);
+    imagePublisher = node.newPublisher("/image_converter/output_video/raw", Image._TYPE);
     imageSubscriber = node.newSubscriber("/web0/webcamera/image/raw", Image._TYPE);
     imageSubscriber.addMessageListener(new MessageListener<Image>() {
         @Override
@@ -147,8 +147,10 @@ public class MainActivity extends RosActivity implements NodeMain{
                     //place the circle in the middle of the picture with radius 100 and color blue.
                     Core.circle(cvImage.image, new Point(cvImage.image.cols()/2, cvImage.image.rows()/2), 100, new Scalar(255, 0, 0));
                 }
+
                 cvImage.image = cvImage.image.t();
                 Core.flip(cvImage.image,cvImage.image,1);
+
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(cvImage.image, bmp);
                 runOnUiThread(new Runnable() {
@@ -158,8 +160,10 @@ public class MainActivity extends RosActivity implements NodeMain{
                         imageView.setImageBitmap(bmp);
                     }
                 });
+
                 Core.flip(cvImage.image, cvImage.image, 1);
                 cvImage.image = cvImage.image.t();
+
                 try {
                     imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
                 } catch (IOException e) {
