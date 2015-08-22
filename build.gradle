@@ -42,6 +42,10 @@ allprojects {
     version = project.catkin.pkg.version
 }
 
+String version = project.catkin.pkg.version
+ext.versionCode = Integer.valueOf(version.replace(".", ""))
+ext.versionName = version
+
 
 subprojects {
     /*

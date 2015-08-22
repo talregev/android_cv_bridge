@@ -28,7 +28,9 @@ android {
     applicationId "org.ros.android.android_tutorial_cv_bridge"
     //noinspection OldTargetApi
     targetSdkVersion 15
-    versionCode 1
-    versionName "1.0"
+    //noinspection GroovyAssignabilityCheck
+    versionCode rootProject.versionCode
+    //noinspection GroovyAssignabilityCheck
+    versionName rootProject.versionName
   }
 }
