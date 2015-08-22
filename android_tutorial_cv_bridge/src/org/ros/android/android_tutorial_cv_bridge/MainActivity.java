@@ -71,6 +71,7 @@ public class MainActivity extends RosActivity implements NodeMain{
     protected boolean isInit = false;
     protected ImageView imageView;
     protected Bitmap bmp;
+    protected Runnable displayImage;
 
 
     public MainActivity() {
@@ -86,6 +87,13 @@ public class MainActivity extends RosActivity implements NodeMain{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.main);
         imageView = (ImageView) findViewById(R.id.imageView);
+        displayImage = new Runnable() {
+            @Override
+            public void run() {
+                // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                imageView.setImageBitmap(bmp);
+            }
+        };
     }
 
     @Override
@@ -142,9 +150,9 @@ public class MainActivity extends RosActivity implements NodeMain{
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
                 }
-                //make sure the picture is bug enough for my circle.
+                //make sure the picture is big enough for my circle.
                 if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
-                    //place the circle in the middle of the picture with radius 100 and color blue.
+                    //place the circle in the middle of the picture with radius 100 and color red.
                     Core.circle(cvImage.image, new Point(cvImage.image.cols()/2, cvImage.image.rows()/2), 100, new Scalar(255, 0, 0));
                 }
 
@@ -153,13 +161,7 @@ public class MainActivity extends RosActivity implements NodeMain{
 
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(cvImage.image, bmp);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                        imageView.setImageBitmap(bmp);
-                    }
-                });
+                runOnUiThread(displayImage);
 
                 Core.flip(cvImage.image, cvImage.image, 1);
                 cvImage.image = cvImage.image.t();
