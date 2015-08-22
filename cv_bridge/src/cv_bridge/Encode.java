@@ -41,22 +41,25 @@ import java.util.Vector;
 
 
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
+@SuppressWarnings("Convert2Diamond")
 public enum Encode { INVALID(-1), GRAY(0), RGB(1), BGR(2), RGBA(3), BGRA(4), YUV422(5), BAYER_RGGB(6), BAYER_BGGR(7), BAYER_GBRG(8), BAYER_GRBG(9);
-    protected int formatNumbr;
+    protected int formatNumber;
+
     private static Map<Integer, Encode> map = new HashMap<Integer, Encode>();
     static {
         for (Encode legEnum : Encode.values()) {
-            map.put(legEnum.formatNumbr, legEnum);
+            map.put(legEnum.formatNumber, legEnum);
         }
     }
 
-    Encode(final int formatNumbr) { this.formatNumbr = formatNumbr; }
+    Encode(final int formatNumber) { this.formatNumber = formatNumber; }
 
-    public static Encode valueOf(int formatNumbr) {
-        return map.get(formatNumbr);
+    public static Encode valueOf(int formatNumber) {
+        return map.get(formatNumber);
     }
 }
 
+@SuppressWarnings("Convert2Diamond")
 class ImEncode
 {
     protected static final int SAME_FORMAT = -1;
@@ -130,7 +133,6 @@ class ImEncode
         return (int) l;
     }
 
-    @SuppressWarnings("Convert2Diamond")
     protected static Map<Pair<Encode, Encode>, Vector<Integer>> getConversionCodes() {
         Map<Pair<Encode, Encode>, Vector<Integer>> res = new HashMap<Pair<Encode, Encode>, Vector<Integer>>();
 
@@ -227,7 +229,7 @@ class ImEncode
         return res;
     }
 
-    protected static Encode getFormat(final String encoding)
+    protected static Encode getEncode(final String encoding)
     {
         String lEncoding = encoding.toUpperCase();
 
@@ -248,8 +250,8 @@ class ImEncode
     }
 
     protected static Vector<Integer> getConversionCode(String src_encoding, String dst_encoding) throws Exception {
-        Encode src_encode = getFormat(src_encoding);
-        Encode dst_encode = getFormat(dst_encoding);
+        Encode src_encode = getEncode(src_encoding);
+        Encode dst_encode = getEncode(dst_encoding);
         //TODO: check if src is color format
         boolean is_src_color_format = true; /*sensor_msgs::image_encodings::isColor(src_encoding) ||
             sensor_msgs::image_encodings::isMono(src_encoding) ||
