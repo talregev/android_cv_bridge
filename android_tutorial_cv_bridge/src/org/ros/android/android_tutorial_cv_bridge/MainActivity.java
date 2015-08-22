@@ -130,7 +130,7 @@ public class MainActivity extends RosActivity implements NodeMain{
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
     imagePublisher = node.newPublisher("/image_converter/output_video/raw", Image._TYPE);
-    imageSubscriber = node.newSubscriber("/web0/webcamera/image/raw", Image._TYPE);
+    imageSubscriber = node.newSubscriber("/camera/image/raw", Image._TYPE);
     imageSubscriber.addMessageListener(new MessageListener<Image>() {
         @Override
         public void onNewMessage(Image message) {
