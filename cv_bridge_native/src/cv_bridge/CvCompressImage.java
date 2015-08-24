@@ -29,19 +29,15 @@
 
 package cv_bridge;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
+import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_highgui;
+import org.bytedeco.javacpp.opencv_imgproc;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.highgui.Highgui;
-import org.opencv.imgproc.Imgproc;
 import org.ros.internal.message.MessageBuffers;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Vector;
@@ -92,17 +88,17 @@ public class CvCompressImage
             CvCompressImage temp = CvCompressImage.cvtColor(this,"bgr8");
             this.image      = temp.image;
         }
-        MatOfByte   buf         = new MatOfByte();
+        ByteBuffer buf = ByteBuffer.allocate(0);
         if (dst_format.isEmpty() || dst_format.equals("jpg"))
         {
             ros_image.setFormat("jpg");
-            Highgui.imencode(".jpg", image, buf);
+            opencv_highgui.imencode(".jpg", image, buf);
         }
 
         if(dst_format.equals("png"))
         {
             ros_image.setFormat("png");
-            Highgui.imencode(".png", image, buf);
+            opencv_highgui.imencode(".png", image, buf);
         }
 
         //TODO: check this formats (on rviz) and add more formats
@@ -110,21 +106,21 @@ public class CvCompressImage
         if(dst_format.equals("jp2"))
         {
             ros_image.setFormat("jp2");
-            Highgui.imencode(".jp2", image, buf);
+            opencv_highgui.imencode(".jp2", image, buf);
         }
 
         if(dst_format.equals("bmp"))
         {
             ros_image.setFormat("bmp");
-            Highgui.imencode(".bmp", image, buf);
+            opencv_highgui.imencode(".bmp", image, buf);
         }
         if(dst_format.equals("tif"))
         {
             ros_image.setFormat("tif");
-            Highgui.imencode(".tif", image, buf);
+            opencv_highgui.imencode(".tif", image, buf);
         }
 
-        stream.write(buf.toArray());
+        stream.write(buf.array());
 
         ros_image.setData(stream.buffer().copy());
         return ros_image;
@@ -198,7 +194,7 @@ public class CvCompressImage
                 else
                 {
                     // Perform color conversion
-                    Imgproc.cvtColor(image1, image2, conversion_codes.get(0));
+                    opencv_imgproc.cvtColor(image1, image2, conversion_codes.get(0));
                 }
                 image1 = image2;
             }
@@ -214,10 +210,11 @@ public class CvCompressImage
         byte[] imageInBytes = data.array();
         imageInBytes = Arrays.copyOfRange(imageInBytes, source.getData().arrayOffset(), imageInBytes.length);
         //from http://stackoverflow.com/questions/23202130/android-convert-byte-array-from-camera-api-to-color-mat-object-opencv
-        Mat jpegData = new Mat(1, imageInBytes.length, CvType.CV_8UC1);
-        jpegData.put(0, 0, imageInBytes);
+        Mat cvImage = new Mat(1, imageInBytes.length, opencv_core.CV_8UC1);
+        BytePointer bytePointer = new BytePointer(imageInBytes);
+        cvImage = cvImage.data(bytePointer);
 
-        Mat bgrMat = Highgui.imdecode(jpegData, Highgui.IMREAD_COLOR);
+        Mat bgrMat = opencv_highgui.imdecode(cvImage, opencv_highgui.IMREAD_COLOR);
         return bgrMat;
     }
 }

@@ -35,9 +35,13 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import org.bytedeco.javacpp.opencv_core;
-import org.bytedeco.javacpp.opencv_core.Point;
-import org.bytedeco.javacpp.opencv_core.Scalar;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.ros.android.RosActivity;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -49,34 +53,32 @@ import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import java.io.IOException;
-
-import cv_bridge.CvImage;
-import sensor_msgs.Image;
+import cv_bridge.CvCompressImage;
+import sensor_msgs.CompressedImage;
 
 
 /**
  * @author Tal Regev
  */
-public class MainActivity extends RosActivity implements NodeMain{
+public class MainActivityCompressed extends RosActivity implements NodeMain{
 
-    protected Publisher<Image> imagePublisher;
-    protected Subscriber<Image> imageSubscriber;
+    protected Publisher<CompressedImage> imagePublisher;
+    protected Subscriber<CompressedImage> imageSubscriber;
     protected ConnectedNode node;
-    protected static final String TAG = "cv_bridge Tutorial";
+    protected static final String TAG = "compressed Tutorial";
     protected boolean isInit = false;
-    protected ImageView imageView;
     protected Bitmap bmp;
+    protected ImageView imageView;
     protected Runnable displayImage;
 
 
-    public MainActivity() {
+    public MainActivityCompressed() {
         // The RosActivity constructor configures the notification title and ticker
         // messages.
-        super("cv_bridge Tutorial", "cv_bridge Tutorial");
+        super("compressed_image Tutorial", "compressed_image Tutorial");
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,64 +113,64 @@ public class MainActivity extends RosActivity implements NodeMain{
         return GraphName.of("android_tutorial_cv_bridge");
     }
 
-//    protected boolean isOpenCVInit = false;
-//    protected BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-//        @Override
-//        public void onManagerConnected(int status) {
-//            switch (status) {
-//                case LoaderCallbackInterface.SUCCESS: {
-//                    Log.i(TAG, "OpenCV loaded successfully");
-//                    isOpenCVInit = true;
-//                }
-//                break;
-//                default: {
-//                    super.onManagerConnected(status);
-//                }
-//                break;
-//            }
-//        }
-//    };
+    protected boolean isOpenCVInit = false;
+    protected BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.i(TAG, "OpenCV loaded successfully");
+                    isOpenCVInit = true;
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
     this.node = connectedNode;
     final org.apache.commons.logging.Log log = node.getLog();
-    imagePublisher = node.newPublisher("/image_converter/output_video/raw", Image._TYPE);
-    imageSubscriber = node.newSubscriber("/camera/image/raw", Image._TYPE);
-    imageSubscriber.addMessageListener(new MessageListener<Image>() {
+    imagePublisher = node.newPublisher("/image_converter/output_video/compressed", CompressedImage._TYPE);
+    imageSubscriber = node.newSubscriber("/camera/image/compressed", CompressedImage._TYPE);
+    imageSubscriber.addMessageListener(new MessageListener<CompressedImage>() {
         @Override
-        public void onNewMessage(Image message) {
-
-                CvImage cvImage;
+        public void onNewMessage(CompressedImage message) {
+            if (isOpenCVInit) {
+                CvCompressImage cvImage;
                 try {
-                    cvImage = CvImage.toCvCopy(message,"rgb8");
+                    cvImage = CvCompressImage.toCvCopy(message,"rgb8");
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
                 }
+
                 //make sure the picture is big enough for my circle.
                 if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
                     //place the circle in the middle of the picture with radius 100 and color red.
-                    opencv_core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0,0));
+                    Core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0));
                 }
 
-                cvImage.image =  cvImage.image.t().a();
-                opencv_core.flip(cvImage.image, cvImage.image, 1);
+                cvImage.image = cvImage.image.t();
+                Core.flip(cvImage.image, cvImage.image, 1);
 
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-
-                bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer().asReadOnlyBuffer());
+                Utils.matToBitmap(cvImage.image, bmp);
                 runOnUiThread(displayImage);
 
-                opencv_core.flip(cvImage.image, cvImage.image, 1);
-                cvImage.image = cvImage.image.t().a();
+                Core.flip(cvImage.image, cvImage.image, 1);
+                cvImage.image = cvImage.image.t();
 
                 try {
-                    imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
-                } catch (IOException e) {
+                    imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage(),"jpg"));
+                } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                 }
-
+            }
         }
     });
 
@@ -178,6 +180,9 @@ public class MainActivity extends RosActivity implements NodeMain{
     @Override
     public void onResume() {
         super.onResume();
+        if (isInit) {
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
+        }
     }
 
     @Override
