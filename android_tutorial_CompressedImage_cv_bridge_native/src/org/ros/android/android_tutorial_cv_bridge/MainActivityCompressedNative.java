@@ -122,7 +122,7 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
         public void onNewMessage(CompressedImage message) {
             CvCompressImage cvImage;
             try {
-                cvImage = CvCompressImage.toCvCopy(message,"rgb8");
+                cvImage = CvCompressImage.toCvCopy(message,"rgba8");
             } catch (Exception e) {
                 log.error("cv_bridge exception: " + e.getMessage());
                 return;
@@ -137,10 +137,10 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
 //            cvImage.image = cvImage.image.t().a();
 //            opencv_core.flip(cvImage.image, cvImage.image, 1);
 //
-//            IplImage rawImage = cvImage.image.asIplImage();
-//            bmp = Bitmap.createBitmap(rawImage.width(), rawImage.height(), Bitmap.Config.ARGB_8888);
-//            bmp.copyPixelsFromBuffer(rawImage.asByteBuffer());
-//            runOnUiThread(displayImage);
+            //from https://code.google.com/p/javacv/issues/detail?id=67
+            bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
+            bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer());
+            runOnUiThread(displayImage);
 //
 //            opencv_core.flip(cvImage.image, cvImage.image, 1);
 //            cvImage.image = cvImage.image.t().a();
