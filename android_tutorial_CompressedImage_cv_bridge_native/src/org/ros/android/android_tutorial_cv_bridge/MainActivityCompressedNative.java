@@ -134,16 +134,16 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
                 opencv_core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0,0));
             }
 
-            cvImage.image = cvImage.image.t().a();
-            opencv_core.flip(cvImage.image, cvImage.image, 1);
-
-            IplImage rawImage = cvImage.image.asIplImage();
-            bmp = Bitmap.createBitmap(rawImage.width(), rawImage.height(), Bitmap.Config.ARGB_8888);
-            bmp.copyPixelsFromBuffer(rawImage.asByteBuffer());
-            runOnUiThread(displayImage);
-
-            opencv_core.flip(cvImage.image, cvImage.image, 1);
-            cvImage.image = cvImage.image.t().a();
+//            cvImage.image = cvImage.image.t().a();
+//            opencv_core.flip(cvImage.image, cvImage.image, 1);
+//
+//            IplImage rawImage = cvImage.image.asIplImage();
+//            bmp = Bitmap.createBitmap(rawImage.width(), rawImage.height(), Bitmap.Config.ARGB_8888);
+//            bmp.copyPixelsFromBuffer(rawImage.asByteBuffer());
+//            runOnUiThread(displayImage);
+//
+//            opencv_core.flip(cvImage.image, cvImage.image, 1);
+//            cvImage.image = cvImage.image.t().a();
 
             try {
                 imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage(),"jpg"));

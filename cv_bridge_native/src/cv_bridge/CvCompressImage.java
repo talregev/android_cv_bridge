@@ -88,7 +88,8 @@ public class CvCompressImage
             CvCompressImage temp = CvCompressImage.cvtColor(this,"bgr8");
             this.image      = temp.image;
         }
-        ByteBuffer buf = ByteBuffer.allocate(0);
+        //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
+        BytePointer buf = new BytePointer();
         if (dst_format.isEmpty() || dst_format.equals("jpg"))
         {
             ros_image.setFormat("jpg");
@@ -119,8 +120,10 @@ public class CvCompressImage
             ros_image.setFormat("tif");
             opencv_highgui.imencode(".tif", image, buf);
         }
-
-        stream.write(buf.array());
+        //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
+        byte[] outputBuffer = new byte[buf.limit()];
+        buf.get(outputBuffer);
+        stream.write(outputBuffer);
 
         ros_image.setData(stream.buffer().copy());
         return ros_image;
