@@ -134,16 +134,16 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
                 opencv_core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0,0));
             }
 
-//            cvImage.image = cvImage.image.t().a();
-//            opencv_core.flip(cvImage.image, cvImage.image, 1);
-//
+            cvImage.image = cvImage.image.t().asMat();
+            opencv_core.flip(cvImage.image, cvImage.image, 1);
+
             //from https://code.google.com/p/javacv/issues/detail?id=67
             bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
             bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer());
             runOnUiThread(displayImage);
-//
-//            opencv_core.flip(cvImage.image, cvImage.image, 1);
-//            cvImage.image = cvImage.image.t().a();
+
+            opencv_core.flip(cvImage.image, cvImage.image, 1);
+            cvImage.image = cvImage.image.t().asMat();
 
             try {
                 imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage(),"jpg"));
