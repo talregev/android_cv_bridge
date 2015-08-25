@@ -34,7 +34,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Point;
 import org.bytedeco.javacpp.opencv_core.Scalar;
 import org.ros.android.RosActivity;
@@ -135,8 +137,9 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
             cvImage.image = cvImage.image.t().a();
             opencv_core.flip(cvImage.image, cvImage.image, 1);
 
-            bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-            bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer().asReadOnlyBuffer());
+            IplImage rawImage = cvImage.image.asIplImage();
+            bmp = Bitmap.createBitmap(rawImage.width(), rawImage.height(), Bitmap.Config.ARGB_8888);
+            bmp.copyPixelsFromBuffer(rawImage.asByteBuffer());
             runOnUiThread(displayImage);
 
             opencv_core.flip(cvImage.image, cvImage.image, 1);

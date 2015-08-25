@@ -78,6 +78,7 @@ subprojects {
                     res.srcDirs "res"
                     assets.srcDirs "assets"
                     java.srcDirs "src"
+                    jniLibs.srcDirs "lib"
                 }
             }
 
