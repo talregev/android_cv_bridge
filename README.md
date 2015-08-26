@@ -2,15 +2,15 @@
 
 cv_bridge is a Converting between ROS images and OpenCV images library in rosjava is the first pure Android Java implementation of cv_bridge.
 
-[Wiki][1]
+[Wiki][1]  
+
 Apps using [OpenCV Manager][2]:
+- [cv_bridge raw image][3]   
+- [cv_bridge compressued image][4]   
 
-[cv_bridge raw image][3]   
-[cv_bridge compressued image][4]   
-
-Native apps that don't use OpenCV Manager
-[Native cv_bridge raw image][5]   
-[Native cv_bridge compressued image][6]   
+Native apps that don't use OpenCV Manager:
+- [Native cv_bridge raw image][5]   
+- [Native cv_bridge compressued image][6]   
 
 #### TODO:
 * Add documentation to the code
