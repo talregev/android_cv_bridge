@@ -65,7 +65,7 @@ subprojects {
      */
     apply plugin: "ros-android"
     afterEvaluate { project ->
-        // Change the layout of Android projects to be compatible with Eclipse.
+
         android {
             compileSdkVersion 23
             buildToolsVersion "23"
@@ -75,6 +75,7 @@ subprojects {
                 versionCode versionNum
             }
 
+            // Change the layout of Android projects to be compatible with Eclipse.
             //noinspection GroovyAssignabilityCheck
             sourceSets {
                 //noinspection GroovyAssignabilityCheck
