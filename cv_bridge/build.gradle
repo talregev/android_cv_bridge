@@ -40,9 +40,5 @@ android {
   defaultConfig {
     minSdkVersion 10
     targetSdkVersion 23
-    //noinspection GroovyAssignabilityCheck
-    versionCode rootProject.versionCode
-    //noinspection GroovyAssignabilityCheck
-    versionName rootProject.versionName
   }
 }

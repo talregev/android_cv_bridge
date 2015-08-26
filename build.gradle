@@ -43,8 +43,7 @@ allprojects {
 }
 
 String version = project.catkin.pkg.version
-ext.versionCode = Integer.valueOf(version.replace(".", ""))
-ext.versionName = version
+int versionNum = Integer.valueOf(version.replace(".", ""))
 
 
 subprojects {
@@ -71,6 +70,12 @@ subprojects {
             compileSdkVersion 23
             buildToolsVersion "23"
             //noinspection GroovyAssignabilityCheck
+
+            defaultConfig {
+                versionName version
+                versionCode versionNum
+            }
+
             sourceSets {
                 //noinspection GroovyAssignabilityCheck
                 main {

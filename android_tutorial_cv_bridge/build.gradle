@@ -25,12 +25,8 @@ android {
 
   defaultConfig {
     minSdkVersion 10
-    applicationId "org.ros.android.tutorial_cv_bridge"
+    applicationId "org.ros.android.android_tutorial_cv_bridge"
     //noinspection OldTargetApi
     targetSdkVersion 15
-    //noinspection GroovyAssignabilityCheck
-    versionCode rootProject.versionCode
-    //noinspection GroovyAssignabilityCheck
-    versionName rootProject.versionName
   }
 }
