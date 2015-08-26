@@ -69,13 +69,13 @@ subprojects {
         android {
             compileSdkVersion 23
             buildToolsVersion "23"
-            //noinspection GroovyAssignabilityCheck
 
             defaultConfig {
                 versionName version
                 versionCode versionNum
             }
 
+            //noinspection GroovyAssignabilityCheck
             sourceSets {
                 //noinspection GroovyAssignabilityCheck
                 main {
