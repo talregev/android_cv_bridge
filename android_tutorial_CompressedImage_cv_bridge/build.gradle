@@ -25,7 +25,7 @@ android {
 
   defaultConfig {
     minSdkVersion 10
-    applicationId "org.ros.android.android.tutorial_CompressedImage_cv_bridge"
+    applicationId "org.ros.android.android_tutorial_CompressedImage_cv_bridge"
     //noinspection OldTargetApi
     targetSdkVersion 15
   }
