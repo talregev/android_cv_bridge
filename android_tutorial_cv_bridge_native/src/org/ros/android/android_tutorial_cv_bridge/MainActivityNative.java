@@ -141,7 +141,7 @@ public class MainActivityNative extends RosActivity implements NodeMain{
 
                 CvImage cvImage;
                 try {
-                    cvImage = CvImage.toCvCopy(message,"rgb8");
+                    cvImage = CvImage.toCvCopy(message,"rgba8");
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
@@ -152,15 +152,15 @@ public class MainActivityNative extends RosActivity implements NodeMain{
                     opencv_core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0,0));
                 }
 
-                cvImage.image =  cvImage.image.t().a();
+                cvImage.image =  cvImage.image.t().asMat();
                 opencv_core.flip(cvImage.image, cvImage.image, 1);
 
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-                bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer().asReadOnlyBuffer());
+                bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer());
                 runOnUiThread(displayImage);
 
                 opencv_core.flip(cvImage.image, cvImage.image, 1);
-                cvImage.image = cvImage.image.t().a();
+                cvImage.image = cvImage.image.t().asMat();
 
                 try {
                     imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));

@@ -36,6 +36,7 @@ import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.ros.internal.message.MessageBuffers;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -82,14 +83,13 @@ public class CvImage
     public final Image toImageMsg(final Image ros_image) throws IOException {
         ros_image.setHeader(header);
         ros_image.setEncoding(encoding.toLowerCase());
-        int totalByteFrame = (ImEncode.safeLongToInt(image.total()));
 
         ros_image.setWidth(image.cols());
         ros_image.setHeight(image.rows());
-        ros_image.setStep(totalByteFrame / image.rows());
+        ros_image.setStep(image.arrayStep());
 
-        byte[] imageInBytes = image.getByteBuffer().array();
-
+        byte[] imageInBytes = new byte[image.arraySize()];
+        ByteBuffer tal = image.getByteBuffer().get(imageInBytes);
         stream.write(imageInBytes);
 
         //noinspection UnusedAssignment
