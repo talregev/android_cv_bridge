@@ -27,11 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-include "cv_bridge"
-include "cv_bridge_native"
-include "opencv"
-include "opencv3"
-include "android_tutorial_cv_bridge"
-include "android_tutorial_cv_bridge_native"
-include "android_tutorial_CompressedImage_cv_bridge"
-include "android_tutorial_CompressedImage_cv_bridge_native"
+dependencies {
+    compile "org.ros.rosjava_core:rosjava:[0.2,0.3)"
+    compile "org.ros.rosjava_messages:sensor_msgs:[1.11,1.12)"
+    //from https://github.com/bytedeco/javacv/issues/126
+    compile 'org.bytedeco.javacpp-presets:opencv:2.4.11-0.11-android-arm'
+    compile 'org.bytedeco.javacpp-presets:opencv:2.4.11-0.11'
+}
+
+apply plugin: "com.android.library"
+
+android {
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 23
+        //noinspection GroovyAssignabilityCheck
+        versionCode rootProject.versionCode
+        //noinspection GroovyAssignabilityCheck
+        versionName rootProject.versionName
+    }
+}

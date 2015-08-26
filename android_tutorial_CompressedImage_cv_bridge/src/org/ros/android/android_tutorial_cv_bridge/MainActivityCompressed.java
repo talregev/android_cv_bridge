@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.ros.android.android_tutorial_CompressedImage_cv_bridge;
+package org.ros.android.android_tutorial_cv_bridge;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -60,7 +60,7 @@ import sensor_msgs.CompressedImage;
 /**
  * @author Tal Regev
  */
-public class MainActivity extends RosActivity implements NodeMain{
+public class MainActivityCompressed extends RosActivity implements NodeMain{
 
     protected Publisher<CompressedImage> imagePublisher;
     protected Subscriber<CompressedImage> imageSubscriber;
@@ -72,7 +72,7 @@ public class MainActivity extends RosActivity implements NodeMain{
     protected Runnable displayImage;
 
 
-    public MainActivity() {
+    public MainActivityCompressed() {
         // The RosActivity constructor configures the notification title and ticker
         // messages.
         super("compressed_image Tutorial", "compressed_image Tutorial");
