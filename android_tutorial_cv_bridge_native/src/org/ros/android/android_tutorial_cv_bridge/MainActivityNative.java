@@ -64,7 +64,6 @@ public class MainActivityNative extends RosActivity implements NodeMain{
     protected Subscriber<Image> imageSubscriber;
     protected ConnectedNode node;
     protected static final String TAG = "cv_bridge Tutorial";
-    protected boolean isInit = false;
     protected ImageView imageView;
     protected Bitmap bmp;
     protected Runnable displayImage;
@@ -102,7 +101,6 @@ public class MainActivityNative extends RosActivity implements NodeMain{
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
         nodeConfiguration.setMasterUri(getMasterUri());
         nodeMainExecutor.execute(this, nodeConfiguration);
-        isInit = true;
         onResume();
     }
 
@@ -110,24 +108,6 @@ public class MainActivityNative extends RosActivity implements NodeMain{
     public GraphName getDefaultNodeName() {
         return GraphName.of("android_tutorial_cv_bridge");
     }
-
-//    protected boolean isOpenCVInit = false;
-//    protected BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-//        @Override
-//        public void onManagerConnected(int status) {
-//            switch (status) {
-//                case LoaderCallbackInterface.SUCCESS: {
-//                    Log.i(TAG, "OpenCV loaded successfully");
-//                    isOpenCVInit = true;
-//                }
-//                break;
-//                default: {
-//                    super.onManagerConnected(status);
-//                }
-//                break;
-//            }
-//        }
-//    };
 
     @Override
     public void onStart(ConnectedNode connectedNode) {

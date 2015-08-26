@@ -38,7 +38,6 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.ros.internal.message.MessageBuffers;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Vector;
 

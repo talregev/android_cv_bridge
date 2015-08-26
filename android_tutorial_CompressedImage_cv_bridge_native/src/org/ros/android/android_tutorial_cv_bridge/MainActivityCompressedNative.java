@@ -36,7 +36,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import org.bytedeco.javacpp.opencv_core;
-import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Point;
 import org.bytedeco.javacpp.opencv_core.Scalar;
 import org.ros.android.RosActivity;
@@ -63,7 +62,6 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
     protected Subscriber<CompressedImage> imageSubscriber;
     protected ConnectedNode node;
     protected static final String TAG = "compressed Tutorial";
-    protected boolean isInit = false;
     protected Bitmap bmp;
     protected ImageView imageView;
     protected Runnable displayImage;
@@ -101,7 +99,6 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());
         nodeConfiguration.setMasterUri(getMasterUri());
         nodeMainExecutor.execute(this, nodeConfiguration);
-        isInit = true;
         onResume();
     }
 
