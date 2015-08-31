@@ -27,13 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+apply plugin: "ros-android"
+apply plugin: "com.android.library"
+
 dependencies {
   compile "org.ros.rosjava_core:rosjava:[0.2,0.3)"
   compile "org.ros.rosjava_messages:sensor_msgs:[1.11,1.12)"
   compile project(':opencv')
 }
 
-apply plugin: "com.android.library"
 
 android {
 

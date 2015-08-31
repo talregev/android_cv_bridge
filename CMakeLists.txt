@@ -3,7 +3,7 @@ project(android_cv_bridge)
 
 find_package(catkin REQUIRED rosjava_build_tools)
 
-catkin_android_setup(assembleRelease uploadArchives)
+catkin_android_setup(jar publishMavenJavaPublicationToMavenRepository assembleRelease uploadArchives)
 
 catkin_package()
 

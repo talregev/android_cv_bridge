@@ -29,7 +29,7 @@
 
 package cv_bridge;
 
-import android.util.Pair;
+
 
 import org.bytedeco.javacpp.opencv_imgproc;
 import org.bytedeco.javacpp.opencv_core;
@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import javafx.util.Pair;
 
 
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
