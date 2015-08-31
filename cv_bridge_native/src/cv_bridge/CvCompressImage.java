@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import sensor_msgs.CompressedImage;
+import sensor_msgs.imageEncodings;
 import std_msgs.Header;
 
 /**
@@ -179,19 +180,23 @@ public class CvCompressImage
             {
                 int conversion_code = conversion_codes.get(i);
                 if (conversion_code == ImEncode.SAME_FORMAT) {
-                    //TODO: convert from Same number of channels, but different bit depth
-                    /*
-                    double alpha = 1.0;
-                    int src_depth = enc::bitDepth(src_encoding);
-                    int dst_depth = enc::bitDepth(dst_encoding);
+                    //convert from Same number of channels, but different bit depth
+
+                    //double alpha = 1.0;
+                    int src_depth = imageEncodings.bitDepth(src_encoding);
+                    int dst_depth = imageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
+                    //TODO: check which value default for beta is ok.
+                    //from http://www.rubydoc.info/github/ruby-opencv/ruby-opencv/OpenCV/CvMat
+                    //from http://docs.opencv.org/modules/core/doc/basic_structures.html
+                    int beta = 0;
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, getCvType(dst_encoding), 65535. / 255.);
+                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 65535. / 255.,beta);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, getCvType(dst_encoding), 255. / 65535.);
+                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 255. / 65535.,beta);
                     else
-                        image1.convertTo(image2, getCvType(dst_encoding));
-                     */
+                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding));
+
                 }
                 else
                 {
@@ -216,7 +221,6 @@ public class CvCompressImage
         BytePointer bytePointer = new BytePointer(imageInBytes);
         cvImage = cvImage.data(bytePointer);
 
-        Mat bgrMat = opencv_highgui.imdecode(cvImage, opencv_highgui.IMREAD_COLOR);
-        return bgrMat;
+        return opencv_highgui.imdecode(cvImage, opencv_highgui.IMREAD_COLOR);
     }
 }

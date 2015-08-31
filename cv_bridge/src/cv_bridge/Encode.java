@@ -260,14 +260,13 @@ class ImEncode
         boolean is_src_color_format = imageEncodings.isColor(src_encoding) ||
                 imageEncodings.isMono(src_encoding) ||
                 imageEncodings.isBayer(src_encoding) ||
-            (src_encoding == imageEncodings.YUV422);
+            (src_encoding.toLowerCase().equals(imageEncodings.YUV422));
 
         boolean is_dst_color_format = imageEncodings.isColor(dst_encoding) ||
                 imageEncodings.isMono(dst_encoding) ||
                 imageEncodings.isBayer(dst_encoding) ||
-            (dst_encoding == imageEncodings.YUV422);
-
-
+            (dst_encoding.toLowerCase().equals(imageEncodings.YUV422));
+        
         boolean is_num_channels_the_same = imageEncodings.numChannels(src_encoding) == imageEncodings.numChannels(dst_encoding);
 
         // If we have no color info in the source, we can only convert to the same format which

@@ -29,9 +29,6 @@
 
 package cv_bridge;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.opencv.core.CvType;
@@ -41,12 +38,13 @@ import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.ros.internal.message.MessageBuffers;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
+
 import java.util.Arrays;
 import java.util.Vector;
 
 import sensor_msgs.CompressedImage;
+import sensor_msgs.imageEncodings;
+
 import std_msgs.Header;
 
 /**
@@ -181,19 +179,17 @@ public class CvCompressImage
             {
                 int conversion_code = conversion_codes.get(i);
                 if (conversion_code == ImEncode.SAME_FORMAT) {
-                    //TODO: convert from Same number of channels, but different bit depth
-                    /*
-                    double alpha = 1.0;
-                    int src_depth = enc::bitDepth(src_encoding);
-                    int dst_depth = enc::bitDepth(dst_encoding);
+                    //convert from Same number of channels, but different bit depth
+                    //double alpha = 1.0;
+                    int src_depth = imageEncodings.bitDepth(src_encoding);
+                    int dst_depth = imageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, getCvType(dst_encoding), 65535. / 255.);
+                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 65535. / 255.);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, getCvType(dst_encoding), 255. / 65535.);
+                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 255. / 65535.);
                     else
-                        image1.convertTo(image2, getCvType(dst_encoding));
-                     */
+                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding));
                 }
                 else
                 {
@@ -217,7 +213,6 @@ public class CvCompressImage
         Mat jpegData = new Mat(1, imageInBytes.length, CvType.CV_8UC1);
         jpegData.put(0, 0, imageInBytes);
 
-        Mat bgrMat = Highgui.imdecode(jpegData, Highgui.IMREAD_COLOR);
-        return bgrMat;
+        return Highgui.imdecode(jpegData, Highgui.IMREAD_COLOR);
     }
 }

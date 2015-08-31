@@ -143,6 +143,7 @@ public class CvImage
             {
                 int conversion_code = conversion_codes.get(i);
                 if (conversion_code == ImEncode.SAME_FORMAT) {
+                    //convert from Same number of channels, but different bit depth
                     //double alpha = 1.0;
                     int src_depth = imageEncodings.bitDepth(src_encoding);
                     int dst_depth = imageEncodings.bitDepth(dst_encoding);

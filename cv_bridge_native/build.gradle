@@ -31,9 +31,12 @@ apply plugin: 'java'
 dependencies {
     compile "org.ros.rosjava_core:rosjava:[0.2,0.3)"
     compile "org.ros.rosjava_messages:sensor_msgs:[1.11,1.12)"
+
     //from https://github.com/bytedeco/javacv/issues/126
     compile 'org.bytedeco.javacpp-presets:opencv:2.4.11-0.11-android-arm'
     compile 'org.bytedeco.javacpp-presets:opencv:2.4.11-0.11'
+
+    compile project (':image')
 }
 
 
