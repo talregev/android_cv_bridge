@@ -196,7 +196,6 @@ public class CvCompressImage
                         image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 255. / 65535.,beta);
                     else
                         image1.convertTo(image2, ImEncode.getCvType(dst_encoding));
-
                 }
                 else
                 {
