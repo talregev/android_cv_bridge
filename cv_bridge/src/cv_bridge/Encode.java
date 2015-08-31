@@ -266,7 +266,7 @@ class ImEncode
                 imageEncodings.isMono(dst_encoding) ||
                 imageEncodings.isBayer(dst_encoding) ||
             (dst_encoding.toLowerCase().equals(imageEncodings.YUV422));
-        
+
         boolean is_num_channels_the_same = imageEncodings.numChannels(src_encoding) == imageEncodings.numChannels(dst_encoding);
 
         // If we have no color info in the source, we can only convert to the same format which
