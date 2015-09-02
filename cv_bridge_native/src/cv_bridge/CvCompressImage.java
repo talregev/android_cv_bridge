@@ -51,25 +51,27 @@ import std_msgs.Header;
 public class CvCompressImage
 {
     public Header header;
-    public Mat image = new Mat();
-    public String encoding = "bgr8";
+    public Mat image        = new Mat();
+    public String encoding  = imageEncodings.BGR8;
     protected ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
 
     @SuppressWarnings("unused")
     public CvCompressImage(){}
 
     @SuppressWarnings("unused")
-    public CvCompressImage(final Header header, final String format)
+    public CvCompressImage(final Header header, final String encoding)
     {
-        this.header = header;
-        this.image = new Mat();
+        this.header     = header;
+        this.encoding   = encoding;
+        this.image      = new Mat();
     }
     @SuppressWarnings("unused")
-    public CvCompressImage(final Header header, final String format,
+    public CvCompressImage(final Header header, final String encoding,
                            final Mat image)
     {
-        this.header = header;
-        this.image = image;
+        this.header     = header;
+        this.encoding   = encoding;
+        this.image      = image;
     }
 
 //    @SuppressWarnings("unused")
@@ -83,9 +85,9 @@ public class CvCompressImage
     //TODO add a compression parameter.
     public final CompressedImage toImageMsg(final CompressedImage ros_image, String dst_format) throws Exception {
         ros_image.setHeader(header);
-        if(!encoding.equals("bgr8"))
+        if(!encoding.equals(imageEncodings.BGR8))
         {
-            CvCompressImage temp = CvCompressImage.cvtColor(this,"bgr8");
+            CvCompressImage temp = CvCompressImage.cvtColor(this,imageEncodings.BGR8);
             this.image      = temp.image;
         }
         //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977

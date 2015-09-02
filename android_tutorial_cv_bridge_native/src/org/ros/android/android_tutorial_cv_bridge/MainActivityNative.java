@@ -53,6 +53,7 @@ import java.io.IOException;
 
 import cv_bridge.CvImage;
 import sensor_msgs.Image;
+import sensor_msgs.imageEncodings;
 
 
 /**
@@ -121,7 +122,7 @@ public class MainActivityNative extends RosActivity implements NodeMain{
 
                 CvImage cvImage;
                 try {
-                    cvImage = CvImage.toCvCopy(message,"rgba8");
+                    cvImage = CvImage.toCvCopy(message, imageEncodings.RGBA8);
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
