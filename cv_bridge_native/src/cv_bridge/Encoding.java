@@ -34,15 +34,20 @@ package cv_bridge;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_imgproc;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javafx.util.Pair;
 import sensor_msgs.ImageEncodings;
 
-
+//from http://stackoverflow.com/questions/1195206/is-there-a-java-equivalent-or-methodology-for-the-typedef-keyword-in-c
+class Pair<T1,T2> extends AbstractMap.SimpleImmutableEntry<T1,T2> {
+    public Pair(T1 key, T2 value) {
+     super(key, value);
+    }
+}
 
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
 @SuppressWarnings("Convert2Diamond")
