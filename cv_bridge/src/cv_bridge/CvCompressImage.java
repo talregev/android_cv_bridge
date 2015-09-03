@@ -85,7 +85,7 @@ public class CvCompressImage
 //    }
 
     //TODO add a compression parameter.
-    public final CompressedImage toImageMsg(final CompressedImage ros_image, String dst_format) throws Exception {
+    public final CompressedImage toImageMsg(final CompressedImage ros_image, Format dst_format) throws Exception {
         ros_image.setHeader(header);
         if(!encoding.equals(imageEncodings.BGR8))
         {
@@ -93,13 +93,13 @@ public class CvCompressImage
             this.image      = temp.image;
         }
         MatOfByte   buf         = new MatOfByte();
-        if (dst_format.isEmpty() || dst_format.equals("jpg"))
+        if  (Format.JPG == dst_format)
         {
             ros_image.setFormat("jpg");
             Highgui.imencode(".jpg", image, buf);
         }
 
-        if(dst_format.equals("png"))
+        if(Format.PNG == dst_format)
         {
             ros_image.setFormat("png");
             Highgui.imencode(".png", image, buf);
@@ -107,18 +107,18 @@ public class CvCompressImage
 
         //TODO: check this formats (on rviz) and add more formats
         //from http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#Mat imread(const string& filename, int flags)
-        if(dst_format.equals("jp2"))
+        if(Format.JP2 == dst_format)
         {
             ros_image.setFormat("jp2");
             Highgui.imencode(".jp2", image, buf);
         }
 
-        if(dst_format.equals("bmp"))
+        if(Format.BMP == dst_format)
         {
             ros_image.setFormat("bmp");
             Highgui.imencode(".bmp", image, buf);
         }
-        if(dst_format.equals("tif"))
+        if(Format.TIF == dst_format)
         {
             ros_image.setFormat("tif");
             Highgui.imencode(".tif", image, buf);

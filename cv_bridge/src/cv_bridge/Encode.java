@@ -44,19 +44,19 @@ import java.util.Vector;
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
 @SuppressWarnings("Convert2Diamond")
 public enum Encode { INVALID(-1), GRAY(0), RGB(1), BGR(2), RGBA(3), BGRA(4), YUV422(5), BAYER_RGGB(6), BAYER_BGGR(7), BAYER_GBRG(8), BAYER_GRBG(9);
-    protected int formatNumber;
+    protected int encodingNumber;
 
     private static Map<Integer, Encode> map = new HashMap<Integer, Encode>();
     static {
-        for (Encode legEnum : Encode.values()) {
-            map.put(legEnum.formatNumber, legEnum);
+        for (Encode encoding : Encode.values()) {
+            map.put(encoding.encodingNumber, encoding);
         }
     }
 
-    Encode(final int formatNumber) { this.formatNumber = formatNumber; }
+    Encode(final int encodingNumber) { this.encodingNumber = encodingNumber; }
 
-    public static Encode valueOf(int formatNumber) {
-        return map.get(formatNumber);
+    public static Encode valueOf(int encodingNumber) {
+        return map.get(encodingNumber);
     }
 }
 

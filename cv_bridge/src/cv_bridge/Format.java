@@ -26,26 +26,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-apply plugin: 'java'
+package cv_bridge;
 
-dependencies {
-    compile 'org.ros.rosjava_core:rosjava:[0.2,0.3)'
-    compile 'org.ros.rosjava_messages:sensor_msgs:[1.11,1.12)'
+import java.util.HashMap;
+import java.util.Map;
 
-    //from https://github.com/bytedeco/javacv/issues/126
-    compile 'org.bytedeco.javacpp-presets:opencv:2.4.11-0.11-android-arm'
-    compile 'org.bytedeco.javacpp-presets:opencv:2.4.11-0.11'
+/**
+ * Created by tal on 03/09/15.
+ */
+//from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
+@SuppressWarnings("Convert2Diamond")
+public enum Format { INVALID(-1), JPG(0), PNG(1), JP2(2), BMP(3), TIF(4);
+    protected int formatNumber;
 
-    compile project(':image')
-}
+    private static Map<Integer, Format> map = new HashMap<Integer, Format>();
+    static {
+        for (Format format : Format.values()) {
+            map.put(format.formatNumber, format);
+        }
+    }
 
+    Format(final int formatNumber) { this.formatNumber = formatNumber; }
 
-// Change the layout of Android projects to be compatible with Eclipse.
-//noinspection GroovyAssignabilityCheck
-sourceSets {
-    //noinspection GroovyAssignabilityCheck
-    main {
-        java.srcDirs "src"
-        resources.srcDirs "res"
+    public static Format valueOf(int formatNumber) {
+        return map.get(formatNumber);
     }
 }
