@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import sensor_msgs.Image;
-import sensor_msgs.imageEncodings;
+import sensor_msgs.ImageEncodings;
 import std_msgs.Header;
 
 /**
@@ -137,7 +137,7 @@ public class CvImage
         else
         {
             // Convert the source data to the desired encoding
-            final Vector<Integer> conversion_codes = ImEncode.getConversionCode(src_encoding, dst_encoding);
+            final Vector<Integer> conversion_codes = ImEncoding.getConversionCode(src_encoding, dst_encoding);
             Mat image1 = source;
             Mat image2 = new Mat();
 
@@ -145,23 +145,23 @@ public class CvImage
             for(int i=0; i < conversion_codes.size(); ++i)
             {
                 int conversion_code = conversion_codes.get(i);
-                if (conversion_code == ImEncode.SAME_FORMAT) {
+                if (conversion_code == ImEncoding.SAME_FORMAT) {
                     //convert from Same number of channels, but different bit depth
 
                     //double alpha = 1.0;
-                    int src_depth = imageEncodings.bitDepth(src_encoding);
-                    int dst_depth = imageEncodings.bitDepth(dst_encoding);
+                    int src_depth = ImageEncodings.bitDepth(src_encoding);
+                    int dst_depth = ImageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
                     //TODO: check which value default for beta is ok.
                     //from http://www.rubydoc.info/github/ruby-opencv/ruby-opencv/OpenCV/CvMat
                     //from http://docs.opencv.org/modules/core/doc/basic_structures.html
                     int beta = 0;
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 65535. / 255.,beta);
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 65535. / 255.,beta);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 255. / 65535.,beta);
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 255. / 65535.,beta);
                     else
-                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding));
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding));
                 }
                 else
                 {
@@ -180,7 +180,7 @@ public class CvImage
         byte[] imageInBytes = source.getData().array();
         imageInBytes = Arrays.copyOfRange(imageInBytes,source.getData().arrayOffset(),imageInBytes.length);
         String encoding = source.getEncoding().toUpperCase();
-        Mat cvImage = new Mat(source.getHeight(),source.getWidth(),ImEncode.getCvType(encoding));
+        Mat cvImage = new Mat(source.getHeight(),source.getWidth(), ImEncoding.getCvType(encoding));
 
         BytePointer bytePointer = new BytePointer(imageInBytes);
         cvImage = cvImage.data(bytePointer);

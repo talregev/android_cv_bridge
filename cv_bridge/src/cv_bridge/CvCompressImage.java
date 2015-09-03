@@ -43,7 +43,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import sensor_msgs.CompressedImage;
-import sensor_msgs.imageEncodings;
+import sensor_msgs.ImageEncodings;
 
 import std_msgs.Header;
 
@@ -54,7 +54,7 @@ public class CvCompressImage
 {
     public Header header;
     public Mat image = new Mat();
-    public String encoding = imageEncodings.BGR8;
+    public String encoding = ImageEncodings.BGR8;
     protected ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
 
     @SuppressWarnings("unused")
@@ -87,9 +87,9 @@ public class CvCompressImage
     //TODO add a compression parameter.
     public final CompressedImage toImageMsg(final CompressedImage ros_image, Format dst_format) throws Exception {
         ros_image.setHeader(header);
-        if(!encoding.equals(imageEncodings.BGR8))
+        if(!encoding.equals(ImageEncodings.BGR8))
         {
-            CvCompressImage temp = CvCompressImage.cvtColor(this,imageEncodings.BGR8);
+            CvCompressImage temp = CvCompressImage.cvtColor(this, ImageEncodings.BGR8);
             this.image      = temp.image;
         }
         MatOfByte   buf         = new MatOfByte();
@@ -169,9 +169,9 @@ public class CvCompressImage
             String encoding = src_encoding;
             if (src_encoding.isEmpty())
             {
-                encoding = "bgr8";
+                encoding = ImageEncodings.BGR8;
             }
-            final Vector<Integer> conversion_codes = ImEncode.getConversionCode(encoding, dst_encoding);
+            final Vector<Integer> conversion_codes = ImEncoding.getConversionCode(encoding, dst_encoding);
 
             Mat image1 = source;
             Mat image2 = new Mat();
@@ -180,18 +180,18 @@ public class CvCompressImage
             for(int i=0; i < conversion_codes.size(); ++i)
             {
                 int conversion_code = conversion_codes.get(i);
-                if (conversion_code == ImEncode.SAME_FORMAT) {
+                if (conversion_code == ImEncoding.SAME_FORMAT) {
                     //convert from Same number of channels, but different bit depth
                     //double alpha = 1.0;
-                    int src_depth = imageEncodings.bitDepth(src_encoding);
-                    int dst_depth = imageEncodings.bitDepth(dst_encoding);
+                    int src_depth = ImageEncodings.bitDepth(src_encoding);
+                    int dst_depth = ImageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 65535. / 255.);
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 65535. / 255.);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding), 255. / 65535.);
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 255. / 65535.);
                     else
-                        image1.convertTo(image2, ImEncode.getCvType(dst_encoding));
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding));
                 }
                 else
                 {

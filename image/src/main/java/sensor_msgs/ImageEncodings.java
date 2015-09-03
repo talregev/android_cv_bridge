@@ -34,7 +34,7 @@ package sensor_msgs;
  * @author tal.regev@gmail.com (Tal Regev)
  *
  */
-public class imageEncodings {
+public class ImageEncodings {
     public static final String RGB8 = "rgb8";
     public static final String RGBA8 = "rgba8";
     public static final String RGB16 = "rgb16";

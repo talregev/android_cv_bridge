@@ -56,7 +56,7 @@ import org.ros.node.topic.Subscriber;
 import cv_bridge.CvCompressImage;
 import cv_bridge.Format;
 import sensor_msgs.CompressedImage;
-import sensor_msgs.imageEncodings;
+import sensor_msgs.ImageEncodings;
 
 
 /**
@@ -145,7 +145,7 @@ public class MainActivityCompressed extends RosActivity implements NodeMain{
             if (isOpenCVInit) {
                 CvCompressImage cvImage;
                 try {
-                    cvImage = CvCompressImage.toCvCopy(message, imageEncodings.RGB8);
+                    cvImage = CvCompressImage.toCvCopy(message, ImageEncodings.RGB8);
                 } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                     return;
