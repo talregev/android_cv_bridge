@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import sensor_msgs.Image;
+import sensor_msgs.ImageEncodings;
 import std_msgs.Header;
 
 /**
@@ -81,7 +82,7 @@ public class CvImage
     public final Image toImageMsg(final Image ros_image) throws IOException {
         ros_image.setHeader(header);
         ros_image.setEncoding(encoding.toLowerCase());
-        int totalByteFrame = (ImEncode.safeLongToInt(image.total()));
+        int totalByteFrame = (ImEncoding.safeLongToInt(image.total()));
         ros_image.setWidth(image.width());
         ros_image.setHeight(image.height());
         ros_image.setStep(totalByteFrame / image.height());
@@ -134,28 +135,26 @@ public class CvImage
         else
         {
             // Convert the source data to the desired encoding
-            final Vector<Integer> conversion_codes = ImEncode.getConversionCode(src_encoding, dst_encoding);
+            final Vector<Integer> conversion_codes = ImEncoding.getConversionCode(src_encoding, dst_encoding);
             Mat image1 = source;
             Mat image2 = new Mat();
-
 
             for(int i=0; i < conversion_codes.size(); ++i)
             {
                 int conversion_code = conversion_codes.get(i);
-                if (conversion_code == ImEncode.SAME_FORMAT) {
-                    //TODO: convert from Same number of channels, but different bit depth
-                    /*
-                    double alpha = 1.0;
-                    int src_depth = enc::bitDepth(src_encoding);
-                    int dst_depth = enc::bitDepth(dst_encoding);
+                if (conversion_code == ImEncoding.SAME_FORMAT) {
+                    //convert from Same number of channels, but different bit depth
+                    //double alpha = 1.0;
+                    int src_depth = ImageEncodings.bitDepth(src_encoding);
+                    int dst_depth = ImageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, getCvType(dst_encoding), 65535. / 255.);
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 65535. / 255.);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, getCvType(dst_encoding), 255. / 65535.);
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 255. / 65535.);
                     else
-                        image1.convertTo(image2, getCvType(dst_encoding));
-                     */
+                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding));
+
                 }
                 else
                 {
@@ -174,7 +173,7 @@ public class CvImage
         byte[] imageInBytes = source.getData().array();
         imageInBytes = Arrays.copyOfRange(imageInBytes,source.getData().arrayOffset(),imageInBytes.length);
         String encoding = source.getEncoding().toUpperCase();
-        Mat cvImage = new Mat(source.getHeight(),source.getWidth(),ImEncode.getCvType(encoding));
+        Mat cvImage = new Mat(source.getHeight(),source.getWidth(), ImEncoding.getCvType(encoding));
         cvImage.put(0,0,imageInBytes);
         return cvImage;
     }

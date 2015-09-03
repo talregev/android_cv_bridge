@@ -14,12 +14,13 @@
  * the License.
  */
 
+apply plugin: "ros-android"
+apply plugin: 'com.android.application'
+
 dependencies {
   compile 'org.ros.android_core:android_10:[0.2,0.3)'
   compile project(':cv_bridge_native')
 }
-
-apply plugin: 'com.android.application'
 
 android {
 
