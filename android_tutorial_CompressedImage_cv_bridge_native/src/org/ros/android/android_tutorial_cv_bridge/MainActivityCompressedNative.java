@@ -49,7 +49,7 @@ import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import cv_bridge.CvCompressImage;
+import cv_bridge.CvImage;
 import cv_bridge.Format;
 import sensor_msgs.CompressedImage;
 import sensor_msgs.ImageEncodings;
@@ -119,9 +119,9 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
     imageSubscriber.addMessageListener(new MessageListener<CompressedImage>() {
         @Override
         public void onNewMessage(CompressedImage message) {
-            CvCompressImage cvImage;
+            CvImage cvImage;
             try {
-                cvImage = CvCompressImage.toCvCopy(message, ImageEncodings.RGBA8);
+                cvImage = CvImage.toCvCopy(message, ImageEncodings.RGBA8);
             } catch (Exception e) {
                 log.error("cv_bridge exception: " + e.getMessage());
                 return;
@@ -145,7 +145,7 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
             cvImage.image = cvImage.image.t().asMat();
 
             try {
-                imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage(), Format.JPG));
+                imagePublisher.publish(cvImage.toCompressedImageMsg(imagePublisher.newMessage(), Format.JPG));
             } catch (Exception e) {
                 log.error("cv_bridge exception: " + e.getMessage());
             }

@@ -30,8 +30,11 @@
 package cv_bridge;
 
 import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_highgui;
 import org.bytedeco.javacpp.opencv_imgproc;
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.ros.internal.message.MessageBuffers;
 
@@ -40,6 +43,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Vector;
 
+import sensor_msgs.CompressedImage;
 import sensor_msgs.Image;
 import sensor_msgs.ImageEncodings;
 import std_msgs.Header;
@@ -72,14 +76,6 @@ public class CvImage
         this.image = image;
     }
 
-//    @SuppressWarnings("unused")
-//    public final Image toImageMsg() throws IOException {
-//        //TODO create new blank message and not get it from the user. (i don't know how to do it)
-//        Image newBlankMessage = null; //new Image()
-//        //noinspection ConstantConditions
-//        return toImageMsg(newBlankMessage);
-//    }
-
     @SuppressWarnings("unused")
     public final Image toImageMsg(final Image ros_image) throws IOException {
         ros_image.setHeader(header);
@@ -100,14 +96,69 @@ public class CvImage
         return ros_image;
     }
 
-    @SuppressWarnings("unused")
-    static public CvImage toCvCopy(final Image source) throws Exception {
-        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding().toUpperCase(), "");
+    //TODO add a compression parameter.
+    public final CompressedImage toCompressedImageMsg(final CompressedImage ros_image, Format dst_format) throws Exception {
+        ros_image.setHeader(header);
+        Mat image;
+        if(!encoding.equals(ImageEncodings.BGR8))
+        {
+            CvImage temp = CvImage.cvtColor(this, ImageEncodings.BGR8);
+            image      = temp.image;
+        }
+        else
+        {
+            image = this.image;
+        }
+
+        //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
+        BytePointer buf = new BytePointer();
+        if (Format.JPG == dst_format)
+        {
+            ros_image.setFormat("jpg");
+            opencv_highgui.imencode(".jpg", image, buf);
+        }
+
+        if(Format.PNG == dst_format)
+        {
+            ros_image.setFormat("png");
+            opencv_highgui.imencode(".png", image, buf);
+        }
+
+        //TODO: check this formats (on rviz) and add more formats
+        //from http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#Mat imread(const string& filename, int flags)
+        if(Format.JP2 == dst_format)
+        {
+            ros_image.setFormat("jp2");
+            opencv_highgui.imencode(".jp2", image, buf);
+        }
+
+        if(Format.BMP == dst_format)
+        {
+            ros_image.setFormat("bmp");
+            opencv_highgui.imencode(".bmp", image, buf);
+        }
+        if(Format.TIF == dst_format)
+        {
+            ros_image.setFormat("tif");
+            opencv_highgui.imencode(".tif", image, buf);
+        }
+        //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
+        byte[] outputBuffer = new byte[buf.limit()];
+        buf.get(outputBuffer);
+        stream.write(outputBuffer);
+
+        ros_image.setData(stream.buffer().copy());
+        return ros_image;
     }
 
     @SuppressWarnings("unused")
-    static public CvImage toCvCopy(final Image source, final String encoding) throws Exception {
-        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding().toUpperCase(), encoding.toLowerCase());
+    static public CvImage toCvCopy(final Image source) throws Exception {
+        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding(), "");
+    }
+
+    @SuppressWarnings("unused")
+    static public CvImage toCvCopy(final Image source, final String dst_encoding) throws Exception {
+        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding(), dst_encoding);
     }
 
     @SuppressWarnings("unused")
@@ -115,7 +166,13 @@ public class CvImage
         return toCvCopyImpl(source.image, source.header, source.encoding, encoding);
     }
 
+    static public CvImage toCvCopy(final CompressedImage source) throws Exception {
+        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8,"");
+    }
 
+    static public CvImage toCvCopy(final CompressedImage source,final String dst_encoding) throws Exception {
+        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8, dst_encoding);
+    }
 
     protected static CvImage toCvCopyImpl(final Mat source,
                             final Header src_header,
@@ -185,5 +242,18 @@ public class CvImage
         BytePointer bytePointer = new BytePointer(imageInBytes);
         cvImage = cvImage.data(bytePointer);
         return cvImage;
+    }
+
+    protected static Mat matFromImage(final CompressedImage source) throws Exception
+    {
+        ChannelBuffer data = source.getData();
+        byte[] imageInBytes = data.array();
+        imageInBytes = Arrays.copyOfRange(imageInBytes, source.getData().arrayOffset(), imageInBytes.length);
+        //from http://stackoverflow.com/questions/23202130/android-convert-byte-array-from-camera-api-to-color-mat-object-opencv
+        Mat cvImage = new Mat(1, imageInBytes.length, opencv_core.CV_8UC1);
+        BytePointer bytePointer = new BytePointer(imageInBytes);
+        cvImage = cvImage.data(bytePointer);
+
+        return opencv_highgui.imdecode(cvImage, opencv_highgui.IMREAD_COLOR);
     }
 }
