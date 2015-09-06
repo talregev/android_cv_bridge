@@ -53,11 +53,10 @@ import std_msgs.Header;
  */
 public class CvImage
 {
-    protected static final String TAG = "cv_bridge::CvImage";
+    static protected final String TAG = "cv_bridge::CvImage";
     public Header header;
     public Mat image = new Mat();
     public String encoding = "";
-    protected ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
 
     CvImage(){}
 
@@ -85,6 +84,7 @@ public class CvImage
         ros_image.setHeight(image.rows());
         ros_image.setStep(image.arrayStep());
 
+        ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         byte[] imageInBytes = new byte[image.arraySize()];
         ByteBuffer tal = image.getByteBuffer().get(imageInBytes);
         stream.write(imageInBytes);
@@ -112,36 +112,14 @@ public class CvImage
 
         //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
         BytePointer buf = new BytePointer();
-        if (Format.JPG == dst_format)
-        {
-            ros_image.setFormat("jpg");
-            opencv_highgui.imencode(".jpg", image, buf);
-        }
 
-        if(Format.PNG == dst_format)
-        {
-            ros_image.setFormat("png");
-            opencv_highgui.imencode(".png", image, buf);
-        }
-
-        //TODO: check this formats (on rviz) and add more formats
         //from http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#Mat imread(const string& filename, int flags)
-        if(Format.JP2 == dst_format)
-        {
-            ros_image.setFormat("jp2");
-            opencv_highgui.imencode(".jp2", image, buf);
-        }
 
-        if(Format.BMP == dst_format)
-        {
-            ros_image.setFormat("bmp");
-            opencv_highgui.imencode(".bmp", image, buf);
-        }
-        if(Format.TIF == dst_format)
-        {
-            ros_image.setFormat("tif");
-            opencv_highgui.imencode(".tif", image, buf);
-        }
+        ros_image.setFormat(Format.valueOf(dst_format));
+        opencv_highgui.imencode(Format.getExtension(dst_format), image, buf);
+
+
+        ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
         byte[] outputBuffer = new byte[buf.limit()];
         buf.get(outputBuffer);
@@ -161,20 +139,20 @@ public class CvImage
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding(), dst_encoding);
     }
 
-    @SuppressWarnings("unused")
-    static public CvImage cvtColor(final CvImage source, String encoding) throws Exception {
-        return toCvCopyImpl(source.image, source.header, source.encoding, encoding);
-    }
-
     static public CvImage toCvCopy(final CompressedImage source) throws Exception {
-        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8,"");
+        return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8, "");
     }
 
     static public CvImage toCvCopy(final CompressedImage source,final String dst_encoding) throws Exception {
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8, dst_encoding);
     }
 
-    protected static CvImage toCvCopyImpl(final Mat source,
+    @SuppressWarnings("unused")
+    static public CvImage cvtColor(final CvImage source, String encoding) throws Exception {
+        return toCvCopyImpl(source.image, source.header, source.encoding, encoding);
+    }
+
+    static protected CvImage toCvCopyImpl(final Mat source,
                             final Header src_header,
                             final String src_encoding,
                             final String dst_encoding) throws Exception
@@ -233,7 +211,7 @@ public class CvImage
         return cvImage;
     }
 
-    protected static Mat matFromImage(final Image source) throws Exception {
+    static protected Mat matFromImage(final Image source) throws Exception {
         byte[] imageInBytes = source.getData().array();
         imageInBytes = Arrays.copyOfRange(imageInBytes,source.getData().arrayOffset(),imageInBytes.length);
         String encoding = source.getEncoding().toUpperCase();
@@ -244,7 +222,7 @@ public class CvImage
         return cvImage;
     }
 
-    protected static Mat matFromImage(final CompressedImage source) throws Exception
+    static protected Mat matFromImage(final CompressedImage source) throws Exception
     {
         ChannelBuffer data = source.getData();
         byte[] imageInBytes = data.array();
