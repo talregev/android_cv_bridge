@@ -33,12 +33,13 @@ import android.util.Pair;
 
 import org.opencv.core.CvType;
 import org.opencv.imgproc.Imgproc;
-import sensor_msgs.ImageEncodings;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
+import sensor_msgs.ImageEncodings;
 
 
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value

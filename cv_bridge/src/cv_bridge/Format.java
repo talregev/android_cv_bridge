@@ -33,6 +33,7 @@ import java.util.Map;
 
 /**
  * Created by tal on 03/09/15.
+ *
  */
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
 //from http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#Mat imread(const string& filename, int flags)
@@ -50,11 +51,11 @@ public enum Format { JPG("jpg"), JPEG("jpeg"), JPE("jpe"), PNG("png"), BMP("bmp"
 
     Format(final String strFormat) { this.strFormat = strFormat; }
 
-    static public String valueOf(Format format) {
+    public static String valueOf(Format format) {
         return map.get(format);
     }
 
-    static public String getExtension(Format format){
+    static String getExtension(Format format){
         String ext = ".";
         return ext.concat(map.get(format));
     }

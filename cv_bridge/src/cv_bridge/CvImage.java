@@ -130,7 +130,7 @@ public class CvImage
     static public CvImage toCvCopy(final Image source, final String dst_encoding) throws Exception {
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding(), dst_encoding);
     }
-    
+
     static public CvImage toCvCopy(final CompressedImage source) throws Exception {
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8, "");
     }
