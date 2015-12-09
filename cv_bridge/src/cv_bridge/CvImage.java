@@ -34,7 +34,7 @@ import org.jboss.netty.buffer.ChannelBufferOutputStream;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
-import org.opencv.highgui.Highgui;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.ros.internal.message.MessageBuffers;
 
@@ -112,7 +112,7 @@ public class CvImage
         MatOfByte buf         = new MatOfByte();
 
         ros_image.setFormat(Format.valueOf(dst_format));
-        Highgui.imencode(Format.getExtension(dst_format), image, buf);
+        Imgcodecs.imencode(Format.getExtension(dst_format), image, buf);
 
         ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         stream.write(buf.toArray());
@@ -216,6 +216,6 @@ public class CvImage
         Mat jpegData = new Mat(1, imageInBytes.length, CvType.CV_8UC1);
         jpegData.put(0, 0, imageInBytes);
 
-        return Highgui.imdecode(jpegData, Highgui.IMREAD_COLOR);
+        return Imgcodecs.imdecode(jpegData, Imgcodecs.IMREAD_COLOR);
     }
 }

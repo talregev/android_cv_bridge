@@ -32,7 +32,7 @@ package cv_bridge;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacpp.opencv_highgui;
+import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacpp.opencv_imgproc;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
@@ -116,7 +116,7 @@ public class CvImage
         //from http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#Mat imread(const string& filename, int flags)
 
         ros_image.setFormat(Format.valueOf(dst_format));
-        opencv_highgui.imencode(Format.getExtension(dst_format), image, buf);
+        opencv_imgcodecs.imencode(Format.getExtension(dst_format), image, buf);
 
 
         ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
@@ -232,6 +232,6 @@ public class CvImage
         BytePointer bytePointer = new BytePointer(imageInBytes);
         cvImage = cvImage.data(bytePointer);
 
-        return opencv_highgui.imdecode(cvImage, opencv_highgui.IMREAD_COLOR);
+        return opencv_imgcodecs.imdecode(cvImage, opencv_imgcodecs.IMREAD_COLOR);
     }
 }

@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.Point;
 import org.bytedeco.javacpp.opencv_core.Scalar;
+import org.bytedeco.javacpp.opencv_imgproc;
 import org.ros.android.RosActivity;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -130,7 +131,7 @@ public class MainActivityNative extends RosActivity implements NodeMain{
                 //make sure the picture is big enough for my circle.
                 if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
                     //place the circle in the middle of the picture with radius 100 and color red.
-                    opencv_core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0,0));
+                    opencv_imgproc.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0, 0));
                 }
 
                 cvImage.image =  cvImage.image.t().asMat();

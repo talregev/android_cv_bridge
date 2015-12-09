@@ -40,6 +40,7 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.ros.android.RosActivity;
@@ -154,7 +155,7 @@ public class MainActivity extends RosActivity implements NodeMain{
                 //make sure the picture is big enough for my circle.
                 if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
                     //place the circle in the middle of the picture with radius 100 and color red.
-                    Core.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0));
+                    Imgproc.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0));
                 }
 
                 cvImage.image = cvImage.image.t();
