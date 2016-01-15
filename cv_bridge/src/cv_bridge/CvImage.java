@@ -59,6 +59,7 @@ public class CvImage
 
     CvImage(){}
 
+    @SuppressWarnings("unused")
     public CvImage(final Header header, final String encoding)
     {
         this.header = header;
@@ -66,6 +67,7 @@ public class CvImage
         this.image = new Mat();
     }
 
+    @SuppressWarnings("unused")
     public CvImage(final Header header, final String encoding,
                    final Mat image)
     {
@@ -131,6 +133,7 @@ public class CvImage
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding(), dst_encoding);
     }
 
+    @SuppressWarnings("unused")
     static public CvImage toCvCopy(final CompressedImage source) throws Exception {
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8, "");
     }
