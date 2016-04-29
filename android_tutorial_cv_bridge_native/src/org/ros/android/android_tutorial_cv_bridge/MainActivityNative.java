@@ -138,7 +138,7 @@ public class MainActivityNative extends RosActivity implements NodeMain{
                 opencv_core.flip(cvImage.image, cvImage.image, 1);
 
                 bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-                bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer());
+                bmp.copyPixelsFromBuffer(cvImage.image.createBuffer());
                 runOnUiThread(displayImage);
 
                 opencv_core.flip(cvImage.image, cvImage.image, 1);
