@@ -184,7 +184,7 @@ public class MainActivity extends RosActivity implements NodeMain{
     public void onResume() {
         super.onResume();
         if (isInit) {
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
         }
     }
 
