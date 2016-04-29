@@ -86,7 +86,7 @@ public class CvImage
 
         ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         byte[] imageInBytes = new byte[image.arraySize()];
-        ByteBuffer tal = image.getByteBuffer().get(imageInBytes);
+        ((ByteBuffer)image.createBuffer()).get(imageInBytes);
         stream.write(imageInBytes);
 
         //noinspection UnusedAssignment

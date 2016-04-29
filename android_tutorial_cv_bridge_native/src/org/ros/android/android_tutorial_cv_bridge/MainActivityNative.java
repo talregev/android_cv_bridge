@@ -145,11 +145,11 @@ public class MainActivityNative extends RosActivity implements NodeMain{
                 cvImage.image = cvImage.image.t().asMat();
 
                 try {
+                    cvImage = CvImage.cvtColor(cvImage,"rgb8");
                     imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
-                } catch (IOException e) {
+                } catch (Exception e) {
                     log.error("cv_bridge exception: " + e.getMessage());
                 }
-
         }
     });
 
