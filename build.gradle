@@ -28,7 +28,7 @@
  */
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.10"
+    gradleVersion = "2.13"
 }
 
 buildscript {
@@ -88,7 +88,7 @@ subprojects {
             apply plugin: "ros-android"
             android {
                 compileSdkVersion 23
-                buildToolsVersion "23.0.2"
+                buildToolsVersion "23.0.3"
 
                 defaultConfig {
                     versionName version
