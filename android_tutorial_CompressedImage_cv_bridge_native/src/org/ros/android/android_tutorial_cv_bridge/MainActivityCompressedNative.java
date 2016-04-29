@@ -139,7 +139,7 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
 
             //from https://code.google.com/p/javacv/issues/detail?id=67
             bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-            bmp.copyPixelsFromBuffer(cvImage.image.getByteBuffer());
+            bmp.copyPixelsFromBuffer(cvImage.image.createBuffer());
             runOnUiThread(displayImage);
 
             opencv_core.flip(cvImage.image, cvImage.image, 1);
