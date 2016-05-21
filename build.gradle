@@ -59,7 +59,13 @@ subprojects {
      *
      *   https://github.com/rosjava/rosjava_bootstrap/blob/indigo/gradle_plugins/src/main/groovy/org/ros/gradle_plugins/RosPlugin.groovy#L31
      */
-    if (name == "image" || name == "cv_bridge_javacv" ) {
+    def isJava = false
+    javaProject.each { String entry ->
+        if (name == entry ) {
+            isJava = true
+        }
+    }
+    if (isJava) {
         apply plugin: "ros-java"
         apply plugin: "osgi"
         apply plugin: "idea"
@@ -84,7 +90,13 @@ subprojects {
      *   https://github.com/rosjava/rosjava_bootstrap/blob/indigo/gradle_plugins/src/main/groovy/org/ros/gradle_plugins/RosAndroid.groovy#L14
      */
     afterEvaluate { project ->
-        if (name != "image" && name != "cv_bridge_javacv" ) {
+        def isAndroid = true
+        javaProject.each { String entry ->
+            if (name == entry ) {
+                isAndroid = false
+            }
+        }
+        if (isAndroid) {
             apply plugin: "ros-android"
             android {
                 compileSdkVersion 23
