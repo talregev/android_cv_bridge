@@ -121,7 +121,7 @@ public class CvImage
 
         ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         //from https://github.com/bytedeco/javacpp-presets/issues/29#issuecomment-6408082977
-        byte[] outputBuffer = new byte[buf.limit()];
+        byte[] outputBuffer = new byte[(int)buf.capacity()];
         buf.get(outputBuffer);
         stream.write(outputBuffer);
 
