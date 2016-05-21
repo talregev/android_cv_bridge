@@ -44,7 +44,7 @@ allprojects {
 
 String version = project.catkin.pkg.version
 int versionNum = Integer.valueOf(version.replace(".", ""))
-
+String[] javaProject = 'image cv_bridge_native cv_bridge_javacv'.split()
 
 subprojects {
 
@@ -59,7 +59,7 @@ subprojects {
      *
      *   https://github.com/rosjava/rosjava_bootstrap/blob/indigo/gradle_plugins/src/main/groovy/org/ros/gradle_plugins/RosPlugin.groovy#L31
      */
-    if (name == "image" || name == "cv_bridge_native" ) {
+    if (name == "image" || name == "cv_bridge_javacv" ) {
         apply plugin: "ros-java"
         apply plugin: "osgi"
         apply plugin: "idea"
@@ -84,7 +84,7 @@ subprojects {
      *   https://github.com/rosjava/rosjava_bootstrap/blob/indigo/gradle_plugins/src/main/groovy/org/ros/gradle_plugins/RosAndroid.groovy#L14
      */
     afterEvaluate { project ->
-        if (name != "image" && name != "cv_bridge_native" ) {
+        if (name != "image" && name != "cv_bridge_javacv" ) {
             apply plugin: "ros-android"
             android {
                 compileSdkVersion 23
