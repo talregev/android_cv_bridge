@@ -118,9 +118,14 @@ subprojects {
                 // Exclude a few files that are duplicated across our dependencies and
                 // prevent packaging Android applications.
                 packagingOptions {
-                    /* https://github.com/rosjava/android_core/issues/194 */
+                    //from https://github.com/rosjava/android_core/issues/194
                     exclude "META-INF/LICENSE.txt"
                     exclude "META-INF/NOTICE.txt"
+
+                    //from https://github.com/bytedeco/javacpp-presets/issues/220
+                    exclude 'META-INF/services/javax.annotation.processing.Processor'
+                    pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.properties'
+                    pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.xml'
                 }
             }
         }
