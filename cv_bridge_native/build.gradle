@@ -34,17 +34,16 @@ dependencies {
 
     //from https://github.com/bytedeco/javacv/issues/126
     //from http://central.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/
-    //compile 'org.bytedeco.javacpp-presets:opencv:3.0.0-1.1-android-arm'
-    //compile 'org.bytedeco.javacpp-presets:opencv:3.0.0-1.1'
-
-    
     compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '3.1.0' + '-1.2'
     compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '3.1.0' + '-1.2', classifier: 'android-arm'
-
 
     compile project(':image')
 }
 
+//from https://github.com/bytedeco/javacv/issues/395
+configurations {
+    all*.exclude group: 'org.bytedeco', module: 'javacpp-presets'
+}
 
 // Change the layout of Android projects to be compatible with Eclipse.
 //noinspection GroovyAssignabilityCheck
