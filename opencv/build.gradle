@@ -43,6 +43,7 @@ android {
     versionName "3.1.0"
   }
 
+  //noinspection GroovyAssignabilityCheck
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'

@@ -18,7 +18,7 @@
 apply plugin: "ros-android"
 apply plugin: 'com.android.application'
 
-
+//noinspection GroovyAssignabilityCheck
 dependencies {
   compile 'org.ros.android_core:android_10:[0.2,0.3)'
   compile project(':cv_bridge')
