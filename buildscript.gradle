@@ -30,6 +30,7 @@
 rootProject.buildscript {
   apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/indigo/buildscript.gradle"
   dependencies {
+    //noinspection GroovyAssignabilityCheck
     classpath "com.android.tools.build:gradle:2.1.0"
   }
 }

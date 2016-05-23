@@ -15,7 +15,6 @@
  * the License.
  */
 
-apply plugin: "ros-android"
 apply plugin: 'com.android.application'
 
 dependencies {

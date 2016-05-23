@@ -71,6 +71,9 @@ subprojects {
         apply plugin: "idea"
         apply plugin: "eclipse"
     }
+    else{
+        apply plugin: "ros-android"
+    }
 
 
     /*
@@ -90,14 +93,7 @@ subprojects {
      *   https://github.com/rosjava/rosjava_bootstrap/blob/indigo/gradle_plugins/src/main/groovy/org/ros/gradle_plugins/RosAndroid.groovy#L14
      */
     afterEvaluate { project ->
-        def isAndroid = true
-        javaProject.each { String entry ->
-            if (name == entry ) {
-                isAndroid = false
-            }
-        }
-        if (isAndroid) {
-            apply plugin: "ros-android"
+        if (!isJava) {
             android {
                 compileSdkVersion 23
                 buildToolsVersion "23.0.3"

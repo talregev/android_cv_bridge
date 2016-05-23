@@ -27,7 +27,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-apply plugin: "ros-android"
 apply plugin: 'com.android.library'
 
 group 'org'
