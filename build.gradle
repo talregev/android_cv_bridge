@@ -44,7 +44,7 @@ allprojects {
 
 String version = project.catkin.pkg.version
 int versionNum = Integer.valueOf(version.replace(".", ""))
-String[] javaProject = 'image cv_bridge_native cv_bridge_javacv'.split()
+String[] javaProjects = "image cv_bridge_javacv".split()
 
 subprojects {
 
@@ -60,20 +60,21 @@ subprojects {
      *   https://github.com/rosjava/rosjava_bootstrap/blob/indigo/gradle_plugins/src/main/groovy/org/ros/gradle_plugins/RosPlugin.groovy#L31
      */
     def isJava = false
-    javaProject.each { String entry ->
+    javaProjects.each { String entry ->
         if (name == entry ) {
             isJava = true
         }
     }
     if (isJava) {
         apply plugin: "ros-java"
-        apply plugin: "osgi"
-        apply plugin: "idea"
-        apply plugin: "eclipse"
     }
     else{
         apply plugin: "ros-android"
     }
+
+    apply plugin: "osgi"
+    apply plugin: "idea"
+    apply plugin: "eclipse"
 
 
     /*
