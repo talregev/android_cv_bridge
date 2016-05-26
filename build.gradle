@@ -132,13 +132,13 @@ subprojects {
                     exclude "META-INF/NOTICE.txt"
 
                     //from https://github.com/bytedeco/javacpp-presets/issues/220
-                    exclude 'META-INF/services/javax.annotation.processing.Processor'
-                    pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.properties'
-                    pickFirst  'META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.xml'
+                    exclude "META-INF/services/javax.annotation.processing.Processor"
+                    pickFirst  "META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.properties"
+                    pickFirst  "META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.xml"
                 }
             }
         }
     }
 }
 
-defaultTasks 'jar' , 'publishMavenJavaPublicationToMavenRepository' , 'assembleRelease', 'uploadArchives'
+defaultTasks "jar" , "publishMavenJavaPublicationToMavenRepository" , "assembleRelease", "uploadArchives"
