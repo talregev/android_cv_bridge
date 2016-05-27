@@ -118,6 +118,22 @@ subprojects {
                     }
                 }
 
+                buildTypes {
+                    def appStringName = name.replace("android_tutorial_","").replace("_"," ").replace("cv bridge","cv_bridge")
+                    def fullAppName = appStringName.replace("cv_bridge", "").replace("CompressedImage", "Compressed")
+                    all {
+                        resValue "string", "app_string_name", appStringName
+                    }
+                    debug{
+                        //noinspection GroovyAssignabilityCheck
+                        resValue "string", "full_app_name", fullAppName + " dv" + version
+                    }
+                    release {
+                        //noinspection GroovyAssignabilityCheck
+                        resValue "string", "full_app_name", fullAppName + " v" + version
+                    }
+                }
+
                 // Copy JAR dependencies into the libs directory for Eclipse.
                 //noinspection GroovyAssignabilityCheck
                 task deployLibs(type: Copy) {

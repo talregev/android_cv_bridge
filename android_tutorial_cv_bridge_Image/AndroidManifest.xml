@@ -13,8 +13,8 @@
         android:allowBackup="true"
         tools:replace="android:icon" >
         <activity
-            android:name="org.ros.android.android_tutorial_cv_bridge.MainActivityCompressed"
-            android:label="@string/app_name" >
+            android:name="org.ros.android.android_tutorial_cv_bridge.MainActivity"
+            android:label="@string/app_string_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
