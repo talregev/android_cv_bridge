@@ -137,47 +137,46 @@ public class MainActivityCompressed extends RosActivity implements NodeMain{
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
-    this.node = connectedNode;
-    final org.apache.commons.logging.Log log = node.getLog();
-    imagePublisher = node.newPublisher("/image_converter/output_video/compressed", CompressedImage._TYPE);
-    imageSubscriber = node.newSubscriber("/camera/image/compressed", CompressedImage._TYPE);
-    imageSubscriber.addMessageListener(new MessageListener<CompressedImage>() {
-        @Override
-        public void onNewMessage(CompressedImage message) {
-            if (isOpenCVInit) {
-                CvImage cvImage;
-                try {
-                    cvImage = CvImage.toCvCopy(message, ImageEncodings.RGB8);
-                } catch (Exception e) {
-                    log.error("cv_bridge exception: " + e.getMessage());
-                    return;
-                }
+        this.node = connectedNode;
+        final org.apache.commons.logging.Log log = node.getLog();
+        imagePublisher = node.newPublisher("/image_converter/output_video/compressed", CompressedImage._TYPE);
+        imageSubscriber = node.newSubscriber("/camera/image/compressed", CompressedImage._TYPE);
+        imageSubscriber.addMessageListener(new MessageListener<CompressedImage>() {
+            @Override
+            public void onNewMessage(CompressedImage message) {
+                if (isOpenCVInit) {
+                    CvImage cvImage;
+                    try {
+                        cvImage = CvImage.toCvCopy(message, ImageEncodings.RGB8);
+                    } catch (Exception e) {
+                        log.error("cv_bridge exception: " + e.getMessage());
+                        return;
+                    }
 
-                //make sure the picture is big enough for my circle.
-                if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
-                    //place the circle in the middle of the picture with radius 100 and color red.
-                    Imgproc.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0));
-                }
+                    //make sure the picture is big enough for my circle.
+                    if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
+                        //place the circle in the middle of the picture with radius 100 and color red.
+                        Imgproc.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0));
+                    }
 
-                cvImage.image = cvImage.image.t();
-                Core.flip(cvImage.image, cvImage.image, 1);
+                    cvImage.image = cvImage.image.t();
+                    Core.flip(cvImage.image, cvImage.image, 1);
 
-                bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(cvImage.image, bmp);
-                runOnUiThread(displayImage);
+                    bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(cvImage.image, bmp);
+                    runOnUiThread(displayImage);
 
-                Core.flip(cvImage.image, cvImage.image, 1);
-                cvImage.image = cvImage.image.t();
+                    Core.flip(cvImage.image, cvImage.image, 1);
+                    cvImage.image = cvImage.image.t();
 
-                try {
-                    imagePublisher.publish(cvImage.toCompressedImageMsg(imagePublisher.newMessage(), Format.JPG));
-                } catch (Exception e) {
-                    log.error("cv_bridge exception: " + e.getMessage());
+                    try {
+                        imagePublisher.publish(cvImage.toCompressedImageMsg(imagePublisher.newMessage(), Format.JPG));
+                    } catch (Exception e) {
+                        log.error("cv_bridge exception: " + e.getMessage());
+                    }
                 }
             }
-        }
-    });
-
+        });
         Log.i(TAG, "called onStart");
     }
 

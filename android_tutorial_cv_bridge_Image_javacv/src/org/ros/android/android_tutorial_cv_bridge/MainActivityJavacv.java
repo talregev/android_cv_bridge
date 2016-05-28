@@ -50,7 +50,6 @@ import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import java.io.IOException;
 
 import cv_bridge.CvImage;
 import sensor_msgs.Image;
@@ -114,46 +113,45 @@ public class MainActivityJavacv extends RosActivity implements NodeMain{
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
-    this.node = connectedNode;
-    final org.apache.commons.logging.Log log = node.getLog();
-    imagePublisher = node.newPublisher("/image_converter/output_video/raw", Image._TYPE);
-    imageSubscriber = node.newSubscriber("/camera/image/raw", Image._TYPE);
-    imageSubscriber.addMessageListener(new MessageListener<Image>() {
-        @Override
-        public void onNewMessage(Image message) {
+        this.node = connectedNode;
+        final org.apache.commons.logging.Log log = node.getLog();
+        imagePublisher = node.newPublisher("/image_converter/output_video/raw", Image._TYPE);
+        imageSubscriber = node.newSubscriber("/camera/image/raw", Image._TYPE);
+        imageSubscriber.addMessageListener(new MessageListener<Image>() {
+            @Override
+            public void onNewMessage(Image message) {
 
-                CvImage cvImage;
-                try {
-                    cvImage = CvImage.toCvCopy(message, ImageEncodings.RGBA8);
-                } catch (Exception e) {
-                    log.error("cv_bridge exception: " + e.getMessage());
-                    return;
-                }
-                //make sure the picture is big enough for my circle.
-                if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
-                    //place the circle in the middle of the picture with radius 100 and color red.
-                    opencv_imgproc.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0, 0));
-                }
+                    CvImage cvImage;
+                    try {
+                        cvImage = CvImage.toCvCopy(message, ImageEncodings.RGBA8);
+                    } catch (Exception e) {
+                        log.error("cv_bridge exception: " + e.getMessage());
+                        return;
+                    }
+                    //make sure the picture is big enough for my circle.
+                    if (cvImage.image.rows() > 110 && cvImage.image.cols() > 110) {
+                        //place the circle in the middle of the picture with radius 100 and color red.
+                        opencv_imgproc.circle(cvImage.image, new Point(cvImage.image.cols() / 2, cvImage.image.rows() / 2), 100, new Scalar(255, 0, 0, 0));
+                    }
 
-                cvImage.image =  cvImage.image.t().asMat();
-                opencv_core.flip(cvImage.image, cvImage.image, 1);
+                    cvImage.image =  cvImage.image.t().asMat();
+                    opencv_core.flip(cvImage.image, cvImage.image, 1);
 
-                bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
-                bmp.copyPixelsFromBuffer(cvImage.image.createBuffer());
-                runOnUiThread(displayImage);
+                    bmp = Bitmap.createBitmap(cvImage.image.cols(), cvImage.image.rows(), Bitmap.Config.ARGB_8888);
+                    bmp.copyPixelsFromBuffer(cvImage.image.createBuffer());
+                    runOnUiThread(displayImage);
 
-                opencv_core.flip(cvImage.image, cvImage.image, 1);
-                cvImage.image = cvImage.image.t().asMat();
+                    opencv_core.flip(cvImage.image, cvImage.image, 1);
+                    cvImage.image = cvImage.image.t().asMat();
 
-                try {
-                    cvImage = CvImage.cvtColor(cvImage,"rgb8");
-                    imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
-                } catch (Exception e) {
-                    log.error("cv_bridge exception: " + e.getMessage());
-                }
-        }
-    });
-
+                    try {
+                        cvImage = CvImage.cvtColor(cvImage,"rgb8");
+                        imagePublisher.publish(cvImage.toImageMsg(imagePublisher.newMessage()));
+                    } catch (Exception e) {
+                        log.error("cv_bridge exception: " + e.getMessage());
+                    }
+            }
+        });
         Log.i(TAG, "called onStart");
     }
 
