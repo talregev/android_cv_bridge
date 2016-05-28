@@ -51,6 +51,7 @@ import std_msgs.Header;
 /**
  * @author Tal Regev
  */
+@SuppressWarnings({"WeakerAccess"})
 public class CvImage
 {
     static protected final String TAG = "cv_bridge::CvImage";
@@ -58,7 +59,7 @@ public class CvImage
     public Mat image = new Mat();
     public String encoding = "";
 
-    CvImage(){}
+    protected CvImage(){}
 
     public CvImage(final Header header, final String encoding)
     {
@@ -67,6 +68,7 @@ public class CvImage
         this.image = new Mat();
     }
 
+    @SuppressWarnings("unused")
     public CvImage(final Header header, final String encoding,
                    final Mat image)
     {
@@ -139,6 +141,7 @@ public class CvImage
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), source.getEncoding(), dst_encoding);
     }
 
+    @SuppressWarnings("unused")
     static public CvImage toCvCopy(final CompressedImage source) throws Exception {
         return CvImage.toCvCopyImpl(matFromImage(source), source.getHeader(), ImageEncodings.BGR8, "");
     }

@@ -59,7 +59,8 @@ import sensor_msgs.ImageEncodings;
 /**
  * @author Tal Regev
  */
-public class MainActivityCompressedNative extends RosActivity implements NodeMain{
+@SuppressWarnings("WeakerAccess")
+public class MainActivityCompressedJavacv extends RosActivity implements NodeMain{
 
     protected Publisher<CompressedImage> imagePublisher;
     protected Subscriber<CompressedImage> imageSubscriber;
@@ -70,7 +71,7 @@ public class MainActivityCompressedNative extends RosActivity implements NodeMai
     protected Runnable displayImage;
 
 
-    public MainActivityCompressedNative() {
+    public MainActivityCompressedJavacv() {
         // The RosActivity constructor configures the notification title and ticker
         // messages.
         super("compressed_image Tutorial", "compressed_image Tutorial");

@@ -43,6 +43,7 @@ import java.util.Vector;
 import sensor_msgs.ImageEncodings;
 
 //from http://stackoverflow.com/questions/1195206/is-there-a-java-equivalent-or-methodology-for-the-typedef-keyword-in-c
+@SuppressWarnings("WeakerAccess")
 class Pair<T1,T2> extends AbstractMap.SimpleImmutableEntry<T1,T2> {
     public Pair(T1 key, T2 value) {
      super(key, value);
@@ -50,7 +51,7 @@ class Pair<T1,T2> extends AbstractMap.SimpleImmutableEntry<T1,T2> {
 }
 
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
-@SuppressWarnings("Convert2Diamond")
+@SuppressWarnings({"Convert2Diamond", "WeakerAccess"})
 public enum Encoding { INVALID(-1), GRAY(0), RGB(1), BGR(2), RGBA(3), BGRA(4), YUV422(5), BAYER_RGGB(6), BAYER_BGGR(7), BAYER_GBRG(8), BAYER_GRBG(9);
     protected int encodingNumber;
 
@@ -68,7 +69,7 @@ public enum Encoding { INVALID(-1), GRAY(0), RGB(1), BGR(2), RGBA(3), BGRA(4), Y
     }
 }
 
-@SuppressWarnings("Convert2Diamond")
+@SuppressWarnings({"Convert2Diamond", "WeakerAccess"})
 class ImEncoding
 {
     protected static final int SAME_FORMAT = -1;
@@ -135,6 +136,7 @@ class ImEncoding
         throw new Exception("Unrecognized image encoding [" + encoding + "]");
     }
 
+    @SuppressWarnings("unused")
     protected static int safeLongToInt(long l) {
         if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
             throw new IllegalArgumentException

@@ -30,6 +30,7 @@
 package cv_bridge;
 
 import android.util.Pair;
+import android.util.SparseArray;
 
 import org.opencv.core.CvType;
 import org.opencv.imgproc.Imgproc;
@@ -43,11 +44,11 @@ import sensor_msgs.ImageEncodings;
 
 
 //from http://stackoverflow.com/questions/11047756/getting-enum-associated-with-int-value
-@SuppressWarnings("Convert2Diamond")
+@SuppressWarnings({"Convert2Diamond", "WeakerAccess"})
 public enum Encoding { INVALID(-1), GRAY(0), RGB(1), BGR(2), RGBA(3), BGRA(4), YUV422(5), BAYER_RGGB(6), BAYER_BGGR(7), BAYER_GBRG(8), BAYER_GRBG(9);
     protected int encodingNumber;
 
-    private static Map<Integer, Encoding> map = new HashMap<Integer, Encoding>();
+    private static SparseArray<Encoding> map = new SparseArray<Encoding>();
     static {
         for (Encoding encoding : Encoding.values()) {
             map.put(encoding.encodingNumber, encoding);
@@ -61,7 +62,7 @@ public enum Encoding { INVALID(-1), GRAY(0), RGB(1), BGR(2), RGBA(3), BGRA(4), Y
     }
 }
 
-@SuppressWarnings("Convert2Diamond")
+@SuppressWarnings({"Convert2Diamond", "WeakerAccess"})
 class ImEncoding
 {
     protected static final int SAME_FORMAT = -1;

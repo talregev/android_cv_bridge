@@ -60,7 +60,8 @@ import sensor_msgs.ImageEncodings;
 /**
  * @author Tal Regev
  */
-public class MainActivityNative extends RosActivity implements NodeMain{
+@SuppressWarnings("WeakerAccess")
+public class MainActivityJavacv extends RosActivity implements NodeMain{
 
     protected Publisher<Image> imagePublisher;
     protected Subscriber<Image> imageSubscriber;
@@ -71,7 +72,7 @@ public class MainActivityNative extends RosActivity implements NodeMain{
     protected Runnable displayImage;
 
 
-    public MainActivityNative() {
+    public MainActivityJavacv() {
         // The RosActivity constructor configures the notification title and ticker
         // messages.
         super("cv_bridge Tutorial", "cv_bridge Tutorial");

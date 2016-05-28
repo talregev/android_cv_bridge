@@ -50,6 +50,7 @@ import std_msgs.Header;
 /**
  * @author Tal Regev
  */
+@SuppressWarnings("WeakerAccess")
 public class CvImage
 {
     static protected final String TAG = "cv_bridge::CvImage";
@@ -57,7 +58,7 @@ public class CvImage
     public Mat image = new Mat();
     public String encoding = "";
 
-    CvImage(){}
+    protected CvImage(){}
 
     @SuppressWarnings("unused")
     public CvImage(final Header header, final String encoding)

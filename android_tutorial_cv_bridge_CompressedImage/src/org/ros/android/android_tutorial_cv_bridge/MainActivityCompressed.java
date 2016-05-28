@@ -63,6 +63,7 @@ import sensor_msgs.ImageEncodings;
 /**
  * @author Tal Regev
  */
+@SuppressWarnings("WeakerAccess")
 public class MainActivityCompressed extends RosActivity implements NodeMain{
 
     protected Publisher<CompressedImage> imagePublisher;
