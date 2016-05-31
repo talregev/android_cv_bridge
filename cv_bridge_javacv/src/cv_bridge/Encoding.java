@@ -46,7 +46,7 @@ import sensor_msgs.ImageEncodings;
 @SuppressWarnings("WeakerAccess")
 class Pair<T1,T2> extends AbstractMap.SimpleImmutableEntry<T1,T2> {
     public Pair(T1 key, T2 value) {
-     super(key, value);
+        super(key, value);
     }
 }
 
