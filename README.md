@@ -8,9 +8,9 @@ Apps using [OpenCV Manager][2]:
 - [cv_bridge raw images][3]   
 - [cv_bridge compressed images][4]   
 
-Native apps that don't use OpenCV Manager:
-- [Native cv_bridge raw images][5]   
-- [Native cv_bridge compressed images][6]   
+apps that use OpenCV from javacv:
+- [cv_bridge raw images javacv][5]   
+- [cv_bridge compressed images javacv][6]   
 
 #### TODO:
 * Add documentation to the code
