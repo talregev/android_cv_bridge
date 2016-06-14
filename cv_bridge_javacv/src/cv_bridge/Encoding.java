@@ -245,17 +245,17 @@ class ImEncoding
     {
         String lEncoding = encoding.toLowerCase();
 
-        if ((lEncoding.equals(ImageEncodings.MONO8)  || (lEncoding.equals(ImageEncodings.MONO8)))) return Encoding.GRAY;
-        if ((lEncoding.equals(ImageEncodings.BGR8)   || (lEncoding.equals(ImageEncodings.BGR8)))) return Encoding.BGR;
-        if ((lEncoding.equals(ImageEncodings.RGB8)   || (lEncoding.equals(ImageEncodings.RGB8)))) return Encoding.RGB;
-        if ((lEncoding.equals(ImageEncodings.BGRA8)  || (lEncoding.equals(ImageEncodings.BGRA8)))) return Encoding.BGRA;
-        if ((lEncoding.equals(ImageEncodings.RGBA8)  || (lEncoding.equals(ImageEncodings.RGBA8)))) return Encoding.RGBA;
+        if (lEncoding.equals(ImageEncodings.MONO8)) return Encoding.GRAY;
+        if (lEncoding.equals(ImageEncodings.BGR8)) return Encoding.BGR;
+        if (lEncoding.equals(ImageEncodings.RGB8)) return Encoding.RGB;
+        if (lEncoding.equals(ImageEncodings.BGRA8)) return Encoding.BGRA;
+        if (lEncoding.equals(ImageEncodings.RGBA8)) return Encoding.RGBA;
         if (lEncoding.equals(ImageEncodings.YUV422)) return Encoding.YUV422;
 
-        if ((lEncoding.equals(ImageEncodings.BAYER_RGGB8) || (lEncoding.equals(ImageEncodings.BAYER_RGGB8)))) return Encoding.BAYER_RGGB;
-        if ((lEncoding.equals(ImageEncodings.BAYER_BGGR8) || (lEncoding.equals(ImageEncodings.BAYER_BGGR8)))) return Encoding.BAYER_BGGR;
-        if ((lEncoding.equals(ImageEncodings.BAYER_GBRG8) || (lEncoding.equals(ImageEncodings.BAYER_GBRG8)))) return Encoding.BAYER_GBRG;
-        if ((lEncoding.equals(ImageEncodings.BAYER_GRBG8) || (lEncoding.equals(ImageEncodings.BAYER_GRBG8)))) return Encoding.BAYER_GRBG;
+        if (lEncoding.equals(ImageEncodings.BAYER_RGGB8)) return Encoding.BAYER_RGGB;
+        if (lEncoding.equals(ImageEncodings.BAYER_BGGR8)) return Encoding.BAYER_BGGR;
+        if (lEncoding.equals(ImageEncodings.BAYER_GBRG8)) return Encoding.BAYER_GBRG;
+        if (lEncoding.equals(ImageEncodings.BAYER_GRBG8)) return Encoding.BAYER_GRBG;
 
         // We don't support conversions to/from other types
         return Encoding.INVALID;
