@@ -85,6 +85,8 @@ public class CvImage
         ros_image.setWidth(image.cols());
         ros_image.setHeight(image.rows());
         ros_image.setStep(image.arrayStep());
+        //// TODO: Handle the indian if needed;
+        //// ros_image.setIsBigendian();
 
         ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         byte[] imageInBytes = new byte[image.arraySize()];
@@ -161,6 +163,9 @@ public class CvImage
                             final String dst_encoding) throws Exception
     {
         /// @todo Handle endianness - e.g. 16-bit dc1394 camera images are big-endian
+        /// Languages such as Java manage this for you so that Java code can run on any platform and programmers do not have to manage byte ordering.
+        /// from http://www.yolinux.com/TUTORIALS/Endian-Byte-Order.html
+        /// need to check if it true in our case with this cameras.
 
         // Copy metadata
         CvImage cvImage = new CvImage();
@@ -190,16 +195,17 @@ public class CvImage
                     int src_depth = ImageEncodings.bitDepth(src_encoding);
                     int dst_depth = ImageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
-                    //TODO: check which value default for beta is ok.
                     //from http://www.rubydoc.info/github/ruby-opencv/ruby-opencv/OpenCV/CvMat
                     //from http://docs.opencv.org/modules/core/doc/basic_structures.html
+                    //TODO: check which value default for beta is ok.
                     int beta = 0;
+                    int image2_type = opencv_core.CV_MAKETYPE(opencv_core.CV_MAT_DEPTH(ImEncoding.getCvType(dst_encoding)), image1.channels());
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 65535. / 255.,beta);
+                        image1.convertTo(image2, image2_type, 65535. / 255.,beta);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 255. / 65535.,beta);
+                        image1.convertTo(image2, image2_type, 255. / 65535.,beta);
                     else
-                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding));
+                        image1.convertTo(image2, image2_type);
                 }
                 else
                 {
@@ -235,6 +241,6 @@ public class CvImage
         BytePointer bytePointer = new BytePointer(imageInBytes);
         cvImage = cvImage.data(bytePointer);
 
-        return opencv_imgcodecs.imdecode(cvImage, opencv_imgcodecs.IMREAD_COLOR);
+        return opencv_imgcodecs.imdecode(cvImage, opencv_imgcodecs.IMREAD_ANYCOLOR);
     }
 }

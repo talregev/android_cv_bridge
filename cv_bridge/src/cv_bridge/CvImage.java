@@ -85,6 +85,8 @@ public class CvImage
         ros_image.setWidth(image.width());
         ros_image.setHeight(image.height());
         ros_image.setStep(totalByteFrame / image.height());
+        //// TODO: Handle the indian if needed;
+        //// ros_image.setIsBigendian();
 
         ChannelBufferOutputStream stream = new ChannelBufferOutputStream(MessageBuffers.dynamicBuffer());
         byte[] imageInBytes = new byte[totalByteFrame * image.channels()];
@@ -154,6 +156,9 @@ public class CvImage
                             final String dst_encoding) throws Exception
     {
         /// @todo Handle endianness - e.g. 16-bit dc1394 camera images are big-endian
+        /// Languages such as Java manage this for you so that Java code can run on any platform and programmers do not have to manage byte ordering.
+        /// from http://www.yolinux.com/TUTORIALS/Endian-Byte-Order.html
+        /// need to check if it true in our case with this cameras.
 
         // Copy metadata
         CvImage cvImage = new CvImage();
@@ -181,12 +186,13 @@ public class CvImage
                     int src_depth = ImageEncodings.bitDepth(src_encoding);
                     int dst_depth = ImageEncodings.bitDepth(dst_encoding);
                     // Do scaling between CV_8U [0,255] and CV_16U [0,65535] images.
+                    int image2_type = CvType.makeType(CvType.depth(ImEncoding.getCvType(dst_encoding)), image1.channels());
                     if (src_depth == 8 && dst_depth == 16)
-                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 65535. / 255.);
+                        image1.convertTo(image2, image2_type, 65535. / 255.);
                     else if (src_depth == 16 && dst_depth == 8)
-                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding), 255. / 65535.);
+                        image1.convertTo(image2, image2_type, 255. / 65535.);
                     else
-                        image1.convertTo(image2, ImEncoding.getCvType(dst_encoding));
+                        image1.convertTo(image2, image2_type);
 
                 }
                 else
@@ -220,6 +226,6 @@ public class CvImage
         Mat jpegData = new Mat(1, imageInBytes.length, CvType.CV_8UC1);
         jpegData.put(0, 0, imageInBytes);
 
-        return Imgcodecs.imdecode(jpegData, Imgcodecs.IMREAD_COLOR);
+        return Imgcodecs.imdecode(jpegData, Imgcodecs.IMREAD_ANYCOLOR);
     }
 }

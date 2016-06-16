@@ -303,17 +303,17 @@ class ImEncoding
         final Map<Pair<Encoding, Encoding>, Vector<Integer>> CONVERSION_CODES = getConversionCodes();
 
         Pair<Encoding, Encoding> key = new Pair<Encoding, Encoding>(src_encode, dst_encode);
-        Vector<Integer> val = CONVERSION_CODES.get(key);
+        Vector<Integer> res = CONVERSION_CODES.get(key);
 
-        if (val == null)
+        if (res == null)
             throw new Exception("Unsupported conversion from [" + src_encoding +
                     "] to [" + dst_encoding + "]");
 
 
-        // And deal with depth differences
-        if (ImageEncodings.bitDepth(src_encoding) != ImageEncodings.bitDepth(dst_encoding))
-            val.add(SAME_FORMAT);
+        // And deal with depth differences if the colors are different
+        if (ImageEncodings.bitDepth(src_encoding) != ImageEncodings.bitDepth(dst_encoding) && (getEncoding(src_encoding) != getEncoding(dst_encoding)))
+            res.add(SAME_FORMAT);
 
-        return val;
+        return res;
     }
 }
