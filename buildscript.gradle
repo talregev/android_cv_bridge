@@ -27,10 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 rootProject.buildscript {
-  apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/indigo/buildscript.gradle"
+  apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
   dependencies {
-    //noinspection GroovyAssignabilityCheck
-    classpath "com.android.tools.build:gradle:2.1.0"
+    classpath "com.android.tools.build:gradle:2.2.3"
   }
 }
