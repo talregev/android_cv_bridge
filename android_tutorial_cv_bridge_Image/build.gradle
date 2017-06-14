@@ -19,16 +19,15 @@ apply plugin: 'com.android.application'
 
 //noinspection GroovyAssignabilityCheck
 dependencies {
-  compile "org.ros.android_core:android_10:[0.2,0.3)"
-  compile project(":cv_bridge")
-  compile project(":opencv")
+    compile "org.ros.android_core:android_10:[0.3,0.4)"
+    compile project(":cv_bridge")
 }
 
 android {
-  defaultConfig {
-    minSdkVersion 10
-    applicationId "org.ros.android.android_tutorial_cv_bridge"
-    //noinspection OldTargetApi
-    targetSdkVersion 15
-  }
+    defaultConfig {
+        minSdkVersion 10
+        applicationId "org.ros.android.android_tutorial_cv_bridge"
+        //noinspection OldTargetApi
+        targetSdkVersion 15
+    }
 }
