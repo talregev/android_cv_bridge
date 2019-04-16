@@ -33,7 +33,7 @@ task wrapper(type: Wrapper) {
 }
 
 buildscript {
-    apply from: project.file("buildscript.gradle")
+    apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"
 }
 
 apply plugin: "catkin"
@@ -97,8 +97,7 @@ subprojects {
     afterEvaluate { project ->
         if (!isJava) {
             android {
-                compileSdkVersion 25
-                buildToolsVersion "25.0.3"
+                compileSdkVersion 28
 
                 defaultConfig {
                     versionName version

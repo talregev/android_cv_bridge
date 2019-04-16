@@ -33,14 +33,13 @@ apply plugin: "com.android.library"
 dependencies {
     compile "org.ros.rosjava_core:rosjava:[0.3,0.4)"
     compile "org.ros.rosjava_messages:sensor_msgs:[1.12,1.13)"
-    compile project(":opencv")
+    compile group: 'org.opencv', name: 'openCVLibrary', version: '3.4.0'
     compile project(":image")
 }
 
 
 android {
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 23
+        minSdkVersion 16
     }
 }
