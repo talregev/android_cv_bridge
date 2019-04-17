@@ -96,7 +96,7 @@ public class CvImage
         //noinspection UnusedAssignment
         imageInBytes = null;
 
-        ros_image.setData(stream.buffer().copy());
+        ros_image.setData(stream.buffer());
         return ros_image;
     }
 
@@ -129,7 +129,7 @@ public class CvImage
         buf.get(outputBuffer);
         stream.write(outputBuffer);
 
-        ros_image.setData(stream.buffer().copy());
+        ros_image.setData(stream.buffer());
         return ros_image;
     }
 
