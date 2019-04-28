@@ -73,10 +73,6 @@ subprojects {
         apply plugin: "ros-android"
     }
 
-    apply plugin: "osgi"
-    apply plugin: "idea"
-    apply plugin: "eclipse"
-
 
     /*
      * The android plugin configures a few things:
@@ -102,12 +98,11 @@ subprojects {
                 defaultConfig {
                     versionName version
                     versionCode versionNum
+                    minSdkVersion 16
+                    targetSdkVersion 28
                 }
 
-                // Change the layout of Android projects to be compatible with Eclipse.
-                //noinspection GroovyAssignabilityCheck
                 sourceSets {
-                    //noinspection GroovyAssignabilityCheck
                     main {
                         manifest.srcFile "AndroidManifest.xml"
                         res.srcDirs "res"
@@ -131,26 +126,6 @@ subprojects {
                         //noinspection GroovyAssignabilityCheck
                         resValue "string", "full_app_name", fullAppName + " v" + version
                     }
-                }
-
-                // Copy JAR dependencies into the libs directory for Eclipse.
-                //noinspection GroovyAssignabilityCheck
-                task deployLibs(type: Copy) {
-                    from { configurations.compile }
-                    into { "${project.projectDir}/libs" }
-                }
-
-                // Exclude a few files that are duplicated across our dependencies and
-                // prevent packaging Android applications.
-                packagingOptions {
-                    //from https://github.com/rosjava/android_core/issues/194
-                    exclude "META-INF/LICENSE.txt"
-                    exclude "META-INF/NOTICE.txt"
-
-                    //from https://github.com/bytedeco/javacpp-presets/issues/220
-                    exclude "META-INF/services/javax.annotation.processing.Processor"
-                    pickFirst  "META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.properties"
-                    pickFirst  "META-INF/maven/org.bytedeco.javacpp-presets/opencv/pom.xml"
                 }
             }
         }

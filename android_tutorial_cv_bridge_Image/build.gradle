@@ -17,17 +17,13 @@
 
 apply plugin: 'com.android.application'
 
-//noinspection GroovyAssignabilityCheck
 dependencies {
-    compile 'org.ros.android_core:android_core_components:[0.4,0.5)'
-    compile project(":cv_bridge")
+    implementation 'org.ros.android_core:android_core_components:[0.4,0.5)'
+    implementation project(":cv_bridge")
 }
 
 android {
     defaultConfig {
         applicationId "org.ros.android.android_tutorial_cv_bridge"
-        minSdkVersion 16
-        //noinspection OldTargetApi
-        targetSdkVersion 28
     }
 }

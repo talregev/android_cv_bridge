@@ -27,30 +27,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-//noinspection GroovyAssignabilityCheck
+
 dependencies {
-    compile "org.ros.rosjava_core:rosjava:[0.3,0.4)"
+    implementation "org.ros.rosjava_core:rosjava:[0.3,0.4)"
     compile "org.ros.rosjava_messages:sensor_msgs:[1.12,1.13)"
 
     //from https://github.com/bytedeco/javacv/issues/126
     //from http://central.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/
-    compile group: "org.bytedeco.javacpp-presets", name: "opencv", version: "3.4.3" + "-1.4.3"
-    compile group: "org.bytedeco.javacpp-presets", name: "opencv", version: "3.4.3" + "-1.4.3", classifier: "android-arm"
-    compile group: "org.bytedeco.javacpp-presets", name: "opencv", version: "3.4.3" + "-1.4.3", classifier: "android-arm64"
+    compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '4.0.1-1.4.4'
+    implementation group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '4.0.1-1.4.4', classifier: 'android-arm'
+    implementation group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '4.0.1-1.4.4', classifier: 'android-arm64'
 
     compile project(":image")
 }
 
-//from https://github.com/bytedeco/javacv/issues/395
-//noinspection GroovyAssignabilityCheck
-configurations {
-    all*.exclude group: "org.bytedeco", module: "javacpp-presets"
-}
-
-// Change the layout of Android projects to be compatible with Eclipse.
-//noinspection GroovyAssignabilityCheck
 sourceSets {
-    //noinspection GroovyAssignabilityCheck
     main {
         java.srcDirs "src"
         resources.srcDirs "res"

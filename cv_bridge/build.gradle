@@ -29,17 +29,14 @@
 
 apply plugin: "com.android.library"
 
-//noinspection GroovyAssignabilityCheck
 dependencies {
-    compile "org.ros.rosjava_core:rosjava:[0.3,0.4)"
-    compile "org.ros.rosjava_messages:sensor_msgs:[1.12,1.13)"
-    compile group: 'org.opencv', name: 'openCVLibrary', version: '3.4.0'
-    compile project(":image")
+    implementation "org.ros.rosjava_core:rosjava:[0.3,0.4)"
+    implementation "org.ros.rosjava_messages:sensor_msgs:[1.12,1.13)"
+    api project(":opencv")
+    api project(":image")
 }
-
 
 android {
     defaultConfig {
-        minSdkVersion 16
     }
 }

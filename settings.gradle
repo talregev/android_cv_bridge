@@ -28,6 +28,7 @@
  */
 
 include "image"
+include "opencv"
 
 include "cv_bridge"
 include "cv_bridge_javacv"

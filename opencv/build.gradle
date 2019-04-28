@@ -1,0 +1,24 @@
+
+apply plugin: "com.android.library"
+
+group "org"
+version "4.1.0"
+
+android {
+  defaultConfig {
+    versionCode 4100
+    versionName "4.1.0"
+  }
+
+  sourceSets {
+    main {
+      manifest.srcFile "AndroidManifest.xml"
+      java.srcDirs = ["src"]
+      resources.srcDirs = ["src"]
+      res.srcDirs = ["res"]
+      aidl.srcDirs = ["src"]
+      jniLibs.srcDirs = ['libs']
+    }
+  }
+}
+
