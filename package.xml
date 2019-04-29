@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>android_cv_bridge</name>
-    <version>0.0.10</version>
+    <version>0.0.11</version>
     <description>
         Android cv_bridge support packages for rosjava.
     </description>
