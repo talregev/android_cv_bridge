@@ -27,4 +27,18 @@ android {
         applicationId "org.ros.android.tutorial_CompressedImage_cv_bridge"
         multiDexEnabled  true
     }
+    splits {
+
+        // Configures multiple APKs based on ABI.
+        abi {
+
+            // Enables building multiple APKs per ABI.
+            enable true
+
+            // By default all ABIs are included
+
+            // Specifies that we do not want to also generate a universal APK that includes all ABIs.
+            universalApk false
+        }
+    }
 }
